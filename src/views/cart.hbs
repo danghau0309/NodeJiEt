@@ -1,0 +1,65 @@
+<section id="cart">
+	<div class="cart-container">
+		<div class="cart-item1">
+			<h2>Cart</h2>
+			<table>
+				<tbody id="cartList">
+
+					{{#each cartList}}
+						<tr>
+							<td><img src="../img/{{this.image}}" alt="" /></td>
+							<td>{{this.name}}</td>
+							<td>
+								<div class="quantity-cart">
+									<button class="reduce">-</button>
+									<span class="quantity-product">{{this.quantity}}</span>
+									<button class="increase">+</button>
+								</div>
+							</td>
+							<td>{{this.price}} $$</td>
+							<td><i class="bx bxs-x-circle"></i></td>
+						</tr>
+					{{/each}}
+
+					{{! <tr>
+						<td><img src="../img/shop2.png" alt="" /></td>
+						<td>Tai nghe đỏ siêu vip giới hạn</td>
+						<td>
+							<div class="quantity-cart">
+								<button class="increase">+</button>
+								<span class="quantity-product">1</span>
+								<button class="reduce">-</button>
+							</div>
+						</td>
+						<td>18$</td>
+						<td><i class="bx bxs-x-circle"></i></td>
+					</tr> }}
+				</tbody>
+			</table>
+		</div>
+
+		<div class="cart-item2">
+			<div class="checkout-container">
+				<h2>CheckOut</h2>
+				<form action="">
+					<input type="text" class="discount" placeholder="Enter Code Coupon" />
+
+					<div class="subTotal">
+						<span>SubTotal</span>
+						<span>6$</span>
+					</div>
+					<div class="shipping">
+						<span>Shipping</span>
+						<span>6$</span>
+					</div>
+					<hr />
+					<div class="totalPrice">
+						<h2>Total:</h2>
+						<h2 id="totalPrice">$8</h2>
+					</div>
+					<button id="checkOut">CheckOut</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,23 @@
+<section id="profile" class="profile">
+	<form class="contentProfile">
+		<div id="inforUser">
+			<img src="../img/{{userProfile.userImage}}" alt="" id="userImage" /><br />
+			<span>{{userProfile.username}}</span>
+		</div>
+		<input type="text" placeholder="Họ và tên" id="fullname" value="{{userProfile.fullname}}" />
+		<hr id="lineProfile" />
+		<input type="email" placeholder="Email:" id="email" value="{{userProfile.email}}" />
+		<hr id="lineProfile" />
+
+		<input type="text" placeholder="Địa chỉ" id="address" value="{{userProfile.address}}" />
+		<hr id="lineProfile" />
+		<input
+			type="text"
+			placeholder="Đổi mật khẩu"
+			id="changePassword"
+			value="{{userProfile.password}}"
+		/>
+		<hr id="lineProfile" />
+		<button id="updateProfile">Cập nhật thông tin</button>
+	</form>
+</section>
