@@ -2,17 +2,7 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const authController = require("../controllers/AuthController");
-const multer = require("multer");
-const storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		cb(null, "./src/public/img/");
-	},
-	filename: function (req, file, cb) {
-		cb(null, file.originalname);
-	}
-});
-const upload = multer({ storage: storage });
-
+const { storage, upload } = require("./lib/multer");
 router.get("/signup", authController.signup);
 router.get("/logout", authController.logout);
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));

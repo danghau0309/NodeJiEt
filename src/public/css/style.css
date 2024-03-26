@@ -1070,7 +1070,7 @@ td .bxs-x-circle {
     margin: 0 auto;
 }
 
-.contentProfile input {
+.contentProfile .inputProfile {
     width: 100%;
     border: none;
     padding: 10px;
@@ -1115,6 +1115,10 @@ td .bxs-x-circle {
     text-align: center;
     padding: 10px;
     margin-bottom: 2rem;
+}
+
+#inforUser .username {
+    text-align: center;
 }
 
 @media (max-width: 1028px) {

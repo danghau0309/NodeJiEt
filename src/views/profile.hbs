@@ -1,23 +1,56 @@
 <section id="profile" class="profile">
-	<form class="contentProfile">
+	<form
+		class="contentProfile"
+		method="POST"
+		action="/profile/updateProfile/{{userProfile._id}}"
+		enctype="multipart/form-data"
+	>
 		<div id="inforUser">
-			<img src="../img/{{userProfile.userImage}}" alt="" id="userImage" /><br />
-			<span>{{userProfile.username}}</span>
+			<img src="../img/{{userProfile.userImage}}" alt="" name="userImage" id="userImage" /><br
+			/>
+
+			<input
+				type="text"
+				value="{{userProfile.username}}"
+				name="username"
+				class="username"
+				disabled
+			/>
+
 		</div>
-		<input type="text" placeholder="Họ và tên" id="fullname" value="{{userProfile.fullname}}" />
+		<input
+			type="text"
+			placeholder="Họ và tên"
+			name="fullname"
+			class="fullname inputProfile"
+			value="{{userProfile.fullname}}"
+		/>
 		<hr id="lineProfile" />
-		<input type="email" placeholder="Email:" id="email" value="{{userProfile.email}}" />
+		<input
+			type="email"
+			placeholder="Email:"
+			name="email"
+			class="email inputProfile"
+			value="{{userProfile.email}}"
+		/>
 		<hr id="lineProfile" />
 
-		<input type="text" placeholder="Địa chỉ" id="address" value="{{userProfile.address}}" />
+		<input
+			type="text"
+			placeholder="Địa chỉ"
+			name="address"
+			class="address inputProfile"
+			value="{{userProfile.address}}"
+		/>
 		<hr id="lineProfile" />
 		<input
 			type="text"
 			placeholder="Đổi mật khẩu"
-			id="changePassword"
+			class="changePassword inputProfile"
+			name="password"
 			value="{{userProfile.password}}"
 		/>
 		<hr id="lineProfile" />
-		<button id="updateProfile">Cập nhật thông tin</button>
+		<button id="updateProfile" type="submit">Cập nhật thông tin</button>
 	</form>
 </section>

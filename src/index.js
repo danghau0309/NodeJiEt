@@ -11,7 +11,6 @@ const methodOverride = require("method-override");
 const route = require("./routes");
 const session = require("express-session");
 require("dotenv").config();
-
 // setup Login with google
 app.use(
 	session({
