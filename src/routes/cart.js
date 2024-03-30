@@ -1,0 +1,12 @@
+const express = require("express");
+const router = express.Router();
+const cartController = require("../controllers/CartController");
+router.post("/form_user/", cartController.form_user);
+router.post("/payment/", cartController.payment);
+router.post("/infor_older/", cartController.infor_older);
+router.post("/infor_older_voucher/", cartController.infor_older_voucher);
+router.post("/addToCart/:id", cartController.addToCart);
+router.post("/deleteCart/:id", cartController.deleteCart);
+router.post("/", cartController.voucherCode);
+router.get("/", cartController.cart);
+module.exports = router;

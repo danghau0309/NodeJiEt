@@ -32,7 +32,7 @@
 	<div class="box-container">
 		{{#each products}}
 			<div class="box">
-				<form method="POST" action="/addToCart/{{this._id}}">
+				<form method="POST" action="/cart/addToCart/{{this._id}}">
 					<div class="box-image">
 						<a href="/product/{{this.slug}}">
 							<img src="../img/{{this.image}}" alt="" /></a>
@@ -40,7 +40,7 @@
 					<span class="price text">Giá : {{this.price}}$</span>
 					<a href="/product/{{this.slug}}">
 						<span class="name text">Tên sản phẩm : {{this.name}}</span></a>
-					<button id="btn" type="submit" onclick="addToCart('{{this._id}}')">Mua ngay</button>
+					<button id="btn" type="submit">Mua ngay</button>
 				</form>
 			</div>
 		{{/each}}
@@ -62,7 +62,7 @@
 	<div class="box-container">
 		{{#each bestSelling}}
 			<div class="box">
-				<form method="POST" action="/addToCart/{{this._id}}">
+				<form method="POST" action="/cart/addToCart/{{this._id}}">
 					<span class="bestSelling"><i class="bx bx-purchase-tag-alt"></i> Bán chạy</span>
 					<div class="box-image">
 						<a href="/product/{{this.slug}}">
@@ -72,7 +72,7 @@
 					<span class="price text">Giá : {{this.price}}$</span>
 					<a href="/product/{{this.slug}}">
 						<span class="name text">Tên sản phẩm : {{this.name}}</span></a>
-					<button id="btn" type="submit" onclick="addToCart('{{this._id}}')">Mua ngay</button>
+					<button id="btn" type="submit">Mua ngay</button>
 				</form>
 			</div>
 		{{/each}}
@@ -81,7 +81,7 @@
 	<div class="box-container">
 		{{#each productsWithManyViews}}
 			<div class="box">
-				<form method="POST" action="/addToCart/{{this._id}}">
+				<form method="POST" action="/cart/addToCart/{{this._id}}">
 					<span class="bestSelling"><i class="fa-regular fa-eye"></i>
 						Nhiều lượt xem</span>
 					<div class="box-image">
@@ -92,7 +92,7 @@
 					<span class="price text">Giá : {{this.price}}$</span>
 					<a href="/product/{{this.slug}}">
 						<span class="name text">Tên sản phẩm : {{this.name}}</span></a>
-					<button id="btn" type="submit" onclick="addToCart('{{this._id}}')">Mua ngay</button>
+					<button id="btn" type="submit">Mua ngay</button>
 				</form>
 			</div>
 		{{/each}}

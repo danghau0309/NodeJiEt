@@ -55,6 +55,8 @@ app.use((req, res, next) => {
 		req.session.isLoggedInGoogle = false;
 		res.locals.isLoggedInGoogle = false;
 	}
+	req.session.voucher = false;
+
 	next();
 });
 app.use(methodOverride("_method"));
@@ -70,12 +72,7 @@ app.engine(
 );
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "/views"));
-Handlebars.registerHelper("ifCond", function (v1, v2, options) {
-	if (v1 || v2) {
-		return options.fn(this);
-	}
-	return options.inverse(this);
-});
+
 route(app);
 app.listen(port, () => {
 	console.log(`Example app listening on port http://localhost:${port}`);

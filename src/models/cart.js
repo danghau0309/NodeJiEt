@@ -5,12 +5,11 @@ const cartSchema = new Schema(
 	{
 		id: ObjectId,
 		name: String,
-		quantity: Number,
+		quantity: { type: Number, default: 1 },
 		price: Number,
 		image: String,
 		discount: String,
-		total: Number,
-		bestselling_Product: Number
+		total: Number
 	},
 	{
 		timestamps: true

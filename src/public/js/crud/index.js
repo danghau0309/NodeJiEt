@@ -10,10 +10,20 @@ function deleteItem(id) {
 		.catch((err) => console.error(err));
 }
 
-const apiCart = () => {
-	fetch("http://localhost:5000/apiCart")
-		.then((res) => res.json())
-		.then((data) => console.log(data))
-		.catch((err) => console.log(err));
+const apiDistrict = async () => {
+	const res = await fetch(
+		"https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json"
+	);
+	const data = await res.json();
+	const city = document.getElementById("city");
+	const district = document.getElementById("district");
+	data.forEach((cityList) => {
+		const { Name } = cityList;
+		city.innerHTML += `<option value="${Name}">${Name}</option>`;
+		cityList.Districts.forEach((inforDistrict) => {
+			const { Name } = inforDistrict;
+			district.innerHTML += `<option value="${Name}">${Name}</option>`;
+		});
+	});
 };
-apiCart();
+apiDistrict();
