@@ -157,7 +157,7 @@ class CartController {
 			}
 			const url = req.query.url || "http://localhost:3000/cart/payment";
 			const qrCode = await QRCode.toDataURL(url);
-			// await Order.create(newOrder);
+			await Order.create(newOrder);
 			res.render("order_success", {
 				qrCode,
 				fullname,
