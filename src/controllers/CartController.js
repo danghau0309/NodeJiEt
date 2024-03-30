@@ -5,7 +5,8 @@ const moment = require("moment");
 const Order = require("../models/orders");
 const User = require("../models/user");
 const QRCode = require("qrcode");
-const querystring = require("querystring");
+const { uuid } = require("uuidv4");
+
 class CartController {
 	async cart(req, res, next) {
 		try {
@@ -128,6 +129,7 @@ class CartController {
 			const formattedTime = moment(orderDate).format("D/M/YYYY HH:mm");
 			const customerOrder = await Cart.find({});
 			const username = req.session.username;
+			const order_id = uuid();
 			const newOrder = {
 				fullname,
 				phonenumber,
@@ -139,22 +141,35 @@ class CartController {
 				customerOrder,
 				orderDate: formattedTime,
 				user_id: username || "Khách vãng lai",
-				order_status: "Pending"
+				order_status: "Pending",
+				order_id
 			};
+			let link_icon = "";
+			if (paymentMethod === "zalopay") {
+				link_icon = "https://cdn2.cellphones.com.vn/x/media/logo/gw2/zalopay.png";
+			} else if (paymentMethod === "momo") {
+				link_icon = "https://cdn2.cellphones.com.vn/x/media/logo/gw2/momo_vi.png";
+			} else if (paymentMethod === "shopeepay") {
+				console.log("shoppepay");
+				link_icon = "https://cdn2.cellphones.com.vn/x/media/logo/gw2/shopeepay.png";
+			} else {
+				link_icon = "https://cdn2.cellphones.com.vn/x/media/logo/gw2/vnpay.png";
+			}
 			const url = req.query.url || "http://localhost:3000/cart/payment";
 			const qrCode = await QRCode.toDataURL(url);
-			await Order.create(newOrder);
-			res.send(`
-            <h2>Thông tin đặt hàng</h2>
-            <p>Họ tên: ${fullname}</p>
-            <p>Số điện thoại: ${phonenumber}</p>
-            <p>Email: ${email}</p>
-            <p>Thành phố: ${city}</p>
-            <p>Quận: ${district}</p>
-            <p>Tổng tiền: ${total}</p>
-            <p>Phương thức thanh toán: ${paymentMethod}</p>
-            <img src="${qrCode}" alt="QR Code" />
-        `);
+			// await Order.create(newOrder);
+			res.render("order_success", {
+				qrCode,
+				fullname,
+				phonenumber,
+				city,
+				district,
+				total,
+				paymentMethod,
+				orderDate: formattedTime,
+				order_id,
+				link_icon
+			});
 		} catch (error) {
 			next(error);
 		}

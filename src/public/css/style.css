@@ -1454,6 +1454,77 @@ td .bxs-x-circle {
 }
 
 /* payment voucher */
+/* order_success */
+#order_success {
+    width: 100%;
+    position: relative;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+}
+
+.box_order_success {
+    max-width: 600px;
+    background: #fff;
+    border-radius: var(--border-radius);
+    padding: 10px;
+    margin: 0 auto;
+    box-shadow:
+        hsla(0, 3%, 94%, 0.93) 0px 0px 16px 5px;
+}
+
+.box_success_primary {
+    background: #d3eddb;
+    padding: 1rem;
+    border-radius: 8px;
+
+}
+
+.box_success_primary .title_order_success {
+    text-align: center;
+    text-transform: uppercase;
+    padding: 10px;
+    font-weight: 600;
+}
+
+.box_success_primary span {
+    display: block;
+    padding: 5px;
+}
+
+.box_qr_code {
+    text-align: center;
+    background: var(--text-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+}
+
+.box_qr_code p {
+    text-align: center;
+    padding: 20px 10px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.box_qr_code img {
+    display: block;
+    margin: 0 auto;
+    width: 50%;
+    box-shadow:
+        hsla(0, 3%, 94%, 0.93) 0px 0px 16px 5px;
+
+}
+
+.box_qr_code #icon_paymentMethod {
+    width: 80px;
+    border: none !important;
+    border-radius: var(--border-radius);
+    box-shadow:
+        hsla(0, 3%, 94%, 0.93) 0px 0px 16px 5px;
+    padding: 10px;
+    margin-bottom: 1rem;
+}
+
+/* order_sucess */
 /* Profile */
 
 .profile {

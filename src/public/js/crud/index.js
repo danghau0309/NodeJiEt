@@ -19,11 +19,13 @@ const apiDistrict = async () => {
 	const district = document.getElementById("district");
 	data.forEach((cityList) => {
 		const { Name } = cityList;
-		city.innerHTML += `<option value="${Name}">${Name}</option>`;
-		cityList.Districts.forEach((inforDistrict) => {
-			const { Name } = inforDistrict;
-			district.innerHTML += `<option value="${Name}">${Name}</option>`;
-		});
+		if (city !== null && district !== null) {
+			city.innerHTML += `<option value="${Name}">${Name}</option>`;
+			cityList.Districts.forEach((inforDistrict) => {
+				const { Name } = inforDistrict;
+				district.innerHTML += `<option value="${Name}">${Name}</option>`;
+			});
+		}
 	});
 };
 apiDistrict();
