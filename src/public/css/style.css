@@ -1597,19 +1597,6 @@ td .bxs-x-circle {
     gap: 2rem;
 }
 
-/* .home_container .box_fun {
-    padding: 1rem;
-    text-align: center;
-    border-radius: var(--border-radius);
-    text-transform: uppercase;
-    font-weight: 500;
-    box-shadow: var(--box-shadow);
-    border: none;
-    background: var(--text-color);
-    font-size: 1.2rem;
-    cursor: pointer;
-
-} */
 
 .box_fun a {
     color: var(--text-color);
@@ -1641,8 +1628,69 @@ td .bxs-x-circle {
     box-shadow: var(--main-color) 0px 3px 2px, #000 0px 3px 5px;
 }
 
+#order_list {
+    width: 100%;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+}
+
+.order_detail {
+    margin-bottom: 14rem;
+}
+
+.head_orderDetail a {
+    border: 0;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background: var(--main-color);
+    color: var(--text-color);
+    border-radius: 1rem;
+}
+
+.title_orderDetail {
+    padding: 10px;
+    box-shadow: var(--box-shadow);
+    border-radius: 1rem;
+    font-weight: 400;
+}
+
+.title_infor {
+    font-size: 1.1rem;
+    padding: 10px 0;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+#table_head tr th {
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.order_status {
+    padding: 5px 10px;
+    background: #9cf58a;
+    border-radius: 2rem;
+    color: #185221;
+
+}
+
+
+.container_table {
+    width: 100%;
+    padding: 1rem;
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius);
+}
+
+.container_list {
+    border: 2px solid var(--second-color);
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
 
 /* admin */
+
 /* Profile */
 
 .profile {

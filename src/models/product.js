@@ -12,7 +12,8 @@ const product = new Schema(
 		bestselling_Product: { type: Number, default: 0 },
 		slug: { type: String, slug: "name", unique: true },
 		view: Number,
-		comments: Array
+		comments: Array,
+		category_id: Number
 	},
 	{
 		timestamps: true

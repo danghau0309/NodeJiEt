@@ -1,8 +1,21 @@
 const { response } = require("express");
 const Product = require("../models/product");
+const Order = require("../models/orders");
 class AdminController {
 	admin(req, res, next) {
 		res.render("admin/home");
+	}
+	async showOrderManager(req, res, next) {
+		const orderList = await Order.find({});
+
+		res.render("admin/order_manager", { orderList });
+	}
+	async orderDetails(req, res, next) {
+		const { id } = req.params;
+		const orderDetail = await Order.findById(id);
+		const custommerOfOrder = orderDetail.customerOrder;
+		res.render("admin/orderDetail", { custommerOfOrder });
+		// res.status(200).json(custommerOfOrder);
 	}
 	async showProduct(req, res, next) {
 		try {
@@ -16,17 +29,19 @@ class AdminController {
 
 	async addProduct(req, res, next) {
 		try {
+			console.log(req.file);
 			const { name, price, description, image } = req.body;
-			if (!name || !price || !description || !image) {
+			if (!name || !price || !description) {
 				return res.status(400).send("Vui lòng cung cấp đủ thông tin sản phẩm.");
 			}
 			const newProduct = await Product.create({
 				name,
 				price,
 				description,
-				image,
+				image: req.file.originalname,
 				bestselling_Product: 0,
-				view: 1
+				view: 1,
+				category_id: 2
 			});
 			res.redirect("/admin/addProduct");
 		} catch (error) {
