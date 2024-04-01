@@ -5,6 +5,7 @@ const { storage, upload } = require("./lib/multer");
 router.get("/addProduct", adminController.showProduct);
 router.get("/order_manager", adminController.showOrderManager);
 router.get("/order_manager/:id", adminController.orderDetails);
+router.post("/order_manager/:id", adminController.order_confirmation);
 router.post("/addProduct", upload.single("image"), adminController.addProduct);
 router.get("/:id/edit", adminController.editProduct);
 router.put("/:id", upload.single("image"), adminController.updateProduct);

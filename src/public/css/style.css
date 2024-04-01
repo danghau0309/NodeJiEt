@@ -385,7 +385,57 @@ header a img {
     margin-top: 2rem;
 }
 
+/* category */
+#categories {
+    width: 100%;
+    margin-top: 5rem;
+    padding: 20px 200px;
+    margin-bottom: 10rem;
+}
 
+.cps-container {
+    width: 100%;
+    padding: 10px;
+}
+
+.tab_categories {
+    width: 100%;
+    background: var(--text-color);
+    padding: 10px;
+    border-radius: 1rem;
+    box-shadow: var(--box-shadow);
+    display: flex;
+    justify-content: start;
+    column-gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.tab_categories .item_tab {
+    display: inline-block;
+    padding: 8px 20px;
+    background: #1f1f1f91;
+    color: var(--text-color);
+    border-radius: 2rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.title_sort {
+    font-size: 1.1rem;
+    padding: 1rem 0;
+}
+
+.filter_list .btn_filter {
+    border: 1px solid #1f1f1f71;
+    padding: 5px 10px;
+    display: inline-block;
+    border-radius: 1rem;
+    color: var(--main-color);
+    margin-right: 4px;
+    background: #f8f8f862;
+}
+
+/* category */
 
 #notifi {
     position: absolute;
@@ -659,6 +709,17 @@ td {
     border-radius: 8px;
     box-shadow: 1px 1px 2px 2px #f3f2f2;
 
+}
+
+.order_confirm {
+    height: 2rem;
+    width: 100px;
+    border: 0;
+    outline: none;
+    color: var(--text-color);
+    background: var(--main-color);
+    border-radius: 1rem;
+    cursor: pointer;
 }
 
 form label {
@@ -1687,7 +1748,16 @@ td .bxs-x-circle {
     width: 100%;
     border-collapse: collapse;
     text-align: center;
+    table-layout: fixed;
 }
+
+.container_list tr th,
+td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
 
 /* admin */
 

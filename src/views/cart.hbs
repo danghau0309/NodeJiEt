@@ -1,7 +1,7 @@
 <section id="cart">
 	<div class="cart-container">
 		<div class="cart-item1">
-			<h2>Cart</h2>
+			<h2>Giỏ hàng</h2>
 			<table id="tableList">
 				<tbody id="cartList">
 					{{#each cartList}}
@@ -28,7 +28,7 @@
 
 		<div class="cart-item2">
 			<div class="checkout-container">
-				<h2>CheckOut</h2>
+				<h2>Thanh toán</h2>
 				<form action="/cart" method="POST">
 					<div id="voucher">
 						<input
@@ -61,7 +61,7 @@
 							<span>{{voucher}} $</span>
 						</div>
 					{{/if}}
-					<button id="checkOut" type="submit">CheckOut</button>
+					<button id="checkOut" type="submit">Tiến hành thanh toán</button>
 				</form>
 			</div>
 		</div>

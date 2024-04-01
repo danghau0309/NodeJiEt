@@ -1,4 +1,3 @@
-const { response } = require("express");
 const Product = require("../models/product");
 const Order = require("../models/orders");
 class AdminController {
@@ -17,6 +16,22 @@ class AdminController {
 		res.render("admin/orderDetail", { custommerOfOrder });
 		// res.status(200).json(custommerOfOrder);
 	}
+	async order_confirmation(req, res, next) {
+		const { id } = req.params;
+		try {
+			const order = await Order.findById(id);
+			if (order.order_status === "Đã xác nhận") {
+				await Order.findByIdAndUpdate(id, { order_status: "Pending" }, { new: true });
+				res.status(200).redirect("/admin/order_manager");
+			} else if (order.order_status === "Pending") {
+				await Order.findByIdAndUpdate(id, { order_status: "Đã xác nhận" }, { new: true });
+				res.status(200).redirect("/admin/order_manager");
+			}
+		} catch (error) {
+			res.status(404).json({ error: error.message });
+		}
+	}
+
 	async showProduct(req, res, next) {
 		try {
 			const productList = await Product.find({});

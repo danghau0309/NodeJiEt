@@ -1,6 +1,50 @@
+const Product = require("../models/product");
+const Categories = require("../models/categories");
 class PageProductController {
-	pageProduct(req, res, next) {
-		res.send("oke");
+	async pageProduct(req, res, next) {
+		try {
+			const productList = await Product.find({}).limit(4);
+			const categoryList = await Categories.find({});
+			res.render("category/category", { productList, categoryList });
+		} catch (error) {
+			return res.status(404).json({ error: error });
+		}
+	}
+	async categoryProduct(req, res, next) {
+		try {
+			const categoryList = await Categories.find({});
+			const { id } = req.params;
+			const productList = await Product.find({ category_id: id });
+			console.log(productList);
+			res.render("category/categorylist", { productList, categoryList });
+		} catch (error) {
+			console.error(error);
+			return res.status(404).json({ error: error });
+		}
+	}
+	async sortLowToHigh(req, res, next) {
+		try {
+			const categoryList = await Categories.find({});
+			const arrProduct = await Product.find();
+			const lowTohighPrice = arrProduct.sort((a, b) => {
+				return a.price - b.price;
+			});
+			res.render("category/lowTohigh", { lowTohighPrice, categoryList });
+		} catch (error) {
+			console.error(error);
+			res.status(404).json({ message: error.message });
+		}
+	}
+	async sortHighToLow(req, res, next) {
+		try {
+			const categoryList = await Categories.find({});
+			const arrProduct = await Product.find();
+			const highToLowPrice = arrProduct.sort((a, b) => b.price - a.price);
+			res.render("category/highToLow", { highToLowPrice, categoryList });
+		} catch (error) {
+			console.error(error);
+			res.status(404).json({ message: error.message });
+		}
 	}
 }
 module.exports = new PageProductController();

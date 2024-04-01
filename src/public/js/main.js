@@ -21,3 +21,10 @@ if (addCart !== null) {
 		}
 	});
 }
+// const active = document.querySelectorAll(".button_sort");
+// active.forEach((item) => {
+// 	item.onclick = (e) => {
+// 		e.preventDefault();
+// 		item.classList.toggle("active");
+// 	};
+// });

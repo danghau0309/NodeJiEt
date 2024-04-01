@@ -13,7 +13,7 @@
 						<th>Ngày đặt hàng</th>
 						<th>Trạng thái</th>
 						<th>Chi tiết đơn hàng</th>
-						<th>Hành động</th>
+						<th>Xác nhận</th>
 					</tr>
 				</thead>
 				<tbody id="table_body">
@@ -30,7 +30,8 @@
 								<span id="text">
 									<a href="/admin/order_manager/{{this._id}}">xem chi tiết</a>
 								</span></td>
-							<td><input type="checkbox" /></td>
+							<form action="/admin/order_manager/{{this._id}}" method="POST">
+								<td><button class="order_confirm">Xác thực</button></td></form>
 						</tr>
 					{{/each}}
 				</tbody>

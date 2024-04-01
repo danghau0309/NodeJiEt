@@ -1,32 +1,24 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
-
+const Swal = require("sweetalert2");
 class AuthController {
 	renderLogin(req, res) {
 		res.render("auth/login");
 	}
 	async login(req, res) {
+		const { username, password } = req.body;
+		if (!username || !password) {
+			res.status(403).send({ message: "Lỗi rồi dm !" });
+		}
 		try {
-			const user = await User.findOne({
-				username: req.body.username,
-				password: req.body.password
-			});
-			const { username, password } = req.body;
+			const user = await User.findOne({ username, password });
 			if (user) {
 				req.session.isLoggedIn = true;
 				req.session.username = user.username;
-
-				req.session.save((err) => {
-					if (err) {
-						console.error(err);
-					}
-					res.status(200).redirect("/");
-				});
-			} else if (!username || !password) {
-				res.status(403).send("Invalid username or password");
+				res.status(200).redirect("/");
 			} else {
-				res.status(500).send("User not found");
+				res.status(401).send("Invalid username or password");
 			}
 		} catch (err) {
 			res.status(400).send("Error ...");
@@ -37,15 +29,18 @@ class AuthController {
 	signup(req, res) {
 		res.render("auth/signup");
 	}
-	//POST auth/signup/addUser
-	async addUser(req, res, next) {
+	//POST auth/signup/register
+	async register(req, res, next) {
 		try {
 			const { fullname, username, password, email, address, userImage } = req.body;
-			// if (!username || !password || !email || !userImage || !fullname || !address) {
-			// 	return res.status(400).json({ message: "Invalid ..." });
-			// }
+			if (!username || !password || !email || !fullname || !address) {
+				return res.status(400).send({ message: "errr ........" });
+			}
 			if (password.length < 8) {
 				return res.status(400).json({ message: "Password is Maximum 8 charecters " });
+			}
+			if (!/^\S+@\S+\.\S+$/.test(email)) {
+				return res.status(400).json({ message: "Invalid email format" });
 			}
 			const newUser = new User({
 				fullname,
@@ -59,7 +54,7 @@ class AuthController {
 			res.redirect("/auth/login");
 		} catch (error) {
 			console.error("Error:", error);
-			return res.status(500).json({ message: error.message });
+			return res.status(500).json({ message: "Internal server error" });
 		}
 	}
 	logout(req, res, next) {

@@ -8,7 +8,7 @@ router.get("/logout", authController.logout);
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 router.get("/google/callback", authController.googleCallback);
 router.get("/google/success", authController.success);
-router.post("/signup/addUser", upload.single("userImage"), authController.addUser);
+router.post("/signup/addUser", upload.single("userImage"), authController.register);
 router.post("/login/handleLogin", authController.login);
 router.get("/login", authController.renderLogin);
 
