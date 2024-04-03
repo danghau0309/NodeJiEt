@@ -7,7 +7,11 @@
 		<li><a href="/news">Tin Tức</a></li>
 	</ul>
 	<div class="header-icons">
-		<span id="icon-user">Login</span>
+		{{#if isLoggedIn}}
+			<span id="icon-user">Member</span>
+		{{else}}
+			<span id="icon-user">Login</span>
+		{{/if}}
 	</div>
 	<div class="box-auth" id="box-auth">
 		{{!-- {{#if isLoggedIn isLoggedInGoogle}} --}}
@@ -16,6 +20,9 @@
 			<a href="/profile"><span class="profile"><i class="bx bxs-user-account"></i>Hồ sơ</span></a>
 			<a href="/profile/my_order"><span class="myOlder"><i class="bx bxs-cart"></i>
 					Đơn hàng</span></a>
+			<a href="/profile/exchange">
+				<span class="exchange"><i class="fa-solid fa-rotate"></i> Đổi điểm</span>
+			</a>
 			<a href="/cart"><span class="profile"><i class="bx bx-cart-add"></i>Giỏ hàng </span></a>
 		{{else}}
 			<a href="/auth/login"><span><i class="bx bx-log-in"></i> Đăng Nhập</span></a>

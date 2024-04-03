@@ -10,9 +10,13 @@
 							<td>{{this.name}}</td>
 							<td>
 								<div class="quantity-cart">
-									<button class="reduce">-</button>
+									<form action="/cart/decrease/{{this._id}}" method="POST">
+										<button class="reduce">-</button>
+									</form>
 									<span class="quantity-product">{{this.quantity}}</span>
-									<button class="increase">+</button>
+									<form action="/cart/increase/{{this._id}}" method="POST">
+										<button class="increase">+</button>
+									</form>
 								</div>
 							</td>
 							<td>Giá : {{this.price}} $</td>

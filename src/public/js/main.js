@@ -21,10 +21,40 @@ if (addCart !== null) {
 		}
 	});
 }
-// const active = document.querySelectorAll(".button_sort");
-// active.forEach((item) => {
-// 	item.onclick = (e) => {
-// 		e.preventDefault();
-// 		item.classList.toggle("active");
-// 	};
-// });
+let show_eye = document.querySelector(".fa-eye");
+let show_eye_slash = document.getElementById("fa-eye-slash");
+let passwordInput = document.getElementById("password-input");
+show_eye?.addEventListener("click", () => {
+	if (passwordInput.type === "password") {
+		show_eye.style.display = "none";
+		show_eye_slash.style.display = "block";
+		passwordInput.type = "text";
+	}
+});
+show_eye_slash?.addEventListener("click", () => {
+	if (passwordInput.type === "text") {
+		show_eye.style.display = "block";
+		show_eye_slash.style.display = "none";
+		passwordInput.type = "password";
+	}
+});
+const copyBtn = document.querySelectorAll(".btn-copy");
+copyBtn.forEach((item) => {
+	item?.addEventListener("click", () => {
+		const inputValue = document.querySelector(".voucherInput").value;
+		navigator.clipboard
+			.writeText(inputValue)
+			.then(() => {
+				Swal.fire({
+					title: "Đã sao chép",
+					icon: "success"
+				});
+			})
+			.catch((err) => {
+				Swal.fire({
+					title: "Sao chép thất bại",
+					icon: "error"
+				});
+			});
+	});
+});

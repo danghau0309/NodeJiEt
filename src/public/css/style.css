@@ -59,6 +59,11 @@ header a img {
     display: block;
 }
 
+
+.exchange {
+    color: var(--main-color);
+}
+
 .box-auth span {
     display: block;
     display: flex;
@@ -471,7 +476,6 @@ header a img {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     box-shadow: 2px 2px 2px 2px #dddada;
-    height: 100%;
 }
 
 .item1 {
@@ -551,7 +555,7 @@ form #btnSignIn {
 }
 
 .form-login .link {
-    font-size: 1rem;
+    font-size: .8rem;
     padding: 15px 0;
     display: block;
 }
@@ -801,6 +805,87 @@ form label {
     border-radius: 2rem;
 }
 
+.forgetPassword {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#restore-password {
+    margin-top: 5rem;
+    width: 100%;
+}
+
+.restore_password_page {
+    height: 90vh;
+    width: 100%;
+    position: relative;
+    padding: 1rem;
+}
+
+.cps_container {
+    max-width: 700px;
+    background: #fff;
+    margin: 0 auto;
+    padding: 2rem;
+    box-shadow: var(--box-shadow);
+    border-radius: 1rem;
+}
+
+.title_forgot_password {
+    text-align: center;
+    padding: 10px;
+    text-transform: capitalize;
+    font-size: 1.2rem;
+    letter-spacing: 1.2px;
+    color: #4a4a4a;
+
+}
+
+.title_note {
+    color:
+        hsl(0 0% 47%);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.restore_input label {
+    display: block;
+    padding: 10px 0;
+}
+
+.restore_input input {
+    width: 100%;
+    height: 35px;
+    outline: 0;
+    border: 1px solid #eee;
+    padding: 10px;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+}
+
+.continue {
+    width: 100%;
+    height: 40px;
+    font-size: 1rem;
+    letter-spacing: 1.2px;
+    border: 0;
+    background: var(--main-color);
+    color: var(--text-color);
+    border-radius: 0.5rem;
+    text-transform: uppercase;
+}
+
+.message_otp {
+    text-align: center;
+    color: #9b9a9a;
+}
+
+.forgetPassword span {
+    font-size: .9rem;
+}
+
 .banner-auth-left {
 
     & h3 {
@@ -911,10 +996,12 @@ td .bxs-x-circle {
 }
 
 .quantity-cart {
-    display: inline-block;
+    display: flex;
     border: 1px solid #dfdede;
     padding: 5px 10px;
     border-radius: 2rem;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .quantity-product {
@@ -1078,6 +1165,25 @@ td .bxs-x-circle {
     color: var(--main-color);
     font-weight: 600;
     font-size: 1rem;
+}
+
+.check_eye {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.check_eye i {
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+.fa-pen-to-square {
+    color: var(--main-color);
+}
+
+#fa-eye-slash {
+    display: none;
 }
 
 .myOlder {
@@ -1822,6 +1928,150 @@ td {
 
 #inforUser .username {
     text-align: center;
+}
+
+#bxl-bitcoin {
+    position: relative;
+    left: -54px;
+    top: 2px;
+    color: #fcd535;
+}
+
+.bxl-bitcoin {
+    color: #fcd535;
+}
+
+/* voucher */
+#exchangeVoucher {
+    width: 100%;
+    margin-top: 5rem;
+    margin-bottom: 15rem;
+}
+
+#MyVoucher-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.PageLayout_content {
+    width: 100%;
+    padding: 0 2rem;
+}
+
+
+.ShopItemListView-list {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+
+}
+
+.ShopItemCard {
+    background: var(--text-color);
+    box-shadow: var(--box-shadow);
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.ShopItemCard-image {
+    border-radius: 1rem;
+    padding: 10px;
+    width: 100%;
+    background-color:
+        #090c0f;
+    border-radius: 12px;
+    color: #eaecef;
+    grid-area: auto;
+    line-height: 24px;
+}
+
+.ShopItemCard-points {
+    color: #f0b90b;
+    font-size: 14px;
+    font-weight: 500;
+    grid-area: auto;
+    line-height: 20px;
+}
+
+.ShopItemCard-title {
+    color: #726d6d;
+    font-size: 14px;
+    font-weight: 500;
+    grid-area: auto;
+    line-height: 2rem;
+}
+
+.ShopItemCard-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bn_button {
+    align-items: center;
+    background-color: #fcd535;
+    border-radius: 8px;
+    color: #0b0e11;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    gap: 6px;
+    grid-area: auto;
+    justify-content: center;
+    line-height: 20px;
+    padding: 5px 20px;
+    text-align: center;
+    border: 0;
+    cursor: pointer;
+}
+
+.ShopBannerSummary {
+    display: flex;
+    align-items: center;
+}
+
+.sp-title-point {
+    padding: 5px;
+    box-shadow: var(--box-shadow);
+    border-radius: 0.5rem;
+}
+
+.sp-my-voucher {
+    display: inline-block;
+    padding: 5px;
+    box-shadow: var(--box-shadow);
+    border-radius: 0.5rem;
+    color: var(--main-color);
+}
+
+.voucherInput {
+    border: none;
+    outline: none;
+    box-shadow: var(--box-shadow);
+    padding: 5px;
+    width: 70%;
+    border-radius: 0.5rem;
+}
+
+.btn-copy {
+    border: 0;
+    outline: 0;
+    padding: 5px 10px;
+    color: var(--main-color);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    background: #fcd535;
+}
+
+.ShopBannerSummary-vouchers {
+    display: flex;
+    justify-content: flex-start;
+    padding: 2rem;
+}
+
+.ShopBannerSummary-vouchers-title {
+    margin-right: 1rem;
 }
 
 @media (max-width: 1028px) {

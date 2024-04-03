@@ -16,9 +16,30 @@ class CartController {
 			const shipping = 35;
 			const total = subTotal + shipping;
 			const voucher = req.session.voucherCode;
-			res.render("cart", { cartList, subTotal, shipping, total, voucher });
+			res.render("cart/cart", { cartList, subTotal, shipping, total, voucher });
 		} catch (err) {
 			res.status(404).json({ message: err });
+		}
+	}
+	async increase(req, res, next) {
+		const { id } = req.params;
+		const increaseQuantity = await Cart.findById(id);
+		increaseQuantity.quantity += 1;
+		increaseQuantity.total = increaseQuantity.quantity * increaseQuantity.price;
+		await increaseQuantity.save();
+		res.redirect("/cart");
+	}
+	async decrease(req, res, next) {
+		const { id } = req.params;
+		const decreaseQuantity = await Cart.findById(id);
+		if (decreaseQuantity.quantity === 1) {
+			await Cart.findByIdAndDelete(id);
+			res.redirect("/cart");
+		} else {
+			decreaseQuantity.quantity -= 1;
+			decreaseQuantity.total = decreaseQuantity.quantity * decreaseQuantity.price;
+			await decreaseQuantity.save();
+			res.redirect("/cart");
 		}
 	}
 	async addToCart(req, res, next) {
@@ -83,7 +104,9 @@ class CartController {
 	async form_user(req, res, next) {
 		const cartItems = await Cart.find({});
 		const subTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
-		res.render("payment_infor", { cartItems, subTotal });
+		const shipping = 35;
+		const sum = subTotal + shipping;
+		res.render("cart/payment_infor", { cartItems, subTotal, sum });
 	}
 	async infor_older(req, res, next) {
 		try {
@@ -91,6 +114,7 @@ class CartController {
 
 			const cartItems = await Cart.find({});
 			const subTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
+			const sum = subTotal + 35;
 			req.session.customerOlder = {
 				fullname,
 				phonenumber,
@@ -98,7 +122,10 @@ class CartController {
 				district,
 				email
 			};
-			res.render("infor_older.hbs", { customerOlder: req.session.customerOlder, subTotal });
+			res.render("cart/infor_older.hbs", {
+				customerOlder: req.session.customerOlder,
+				sum
+			});
 		} catch (err) {
 			res.status(500).json({ message: err.message });
 		}
@@ -114,22 +141,27 @@ class CartController {
 		if (findVoucher.voucher_code === "SALE50%") {
 			const customerOlder = req.session.customerOlder;
 			const cartItems = await Cart.find();
-			const sum = cartItems.reduce((sum, item) => sum + item.total, 0);
+			const subTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
 			const shipping = 35;
-			const subTotal = sum / 2 + shipping;
-			res.render("infor_older", { customerOlder, subTotal });
+			const sum = subTotal / 2 + shipping;
+			res.render("cart/infor_older", { customerOlder, sum });
 		} else {
 			res.send("Ưu đãi khác ");
 		}
 	}
 	async payment(req, res, next) {
+		const { fullname, phonenumber, email, city, district, total, paymentMethod } = req.body;
 		try {
-			const { fullname, phonenumber, email, city, district, total, paymentMethod } = req.body;
 			const orderDate = new Date(Date.now());
 			const formattedTime = moment(orderDate).format("D/M/YYYY HH:mm");
 			const customerOrder = await Cart.find({});
 			const username = req.session.username;
 			const order_id = uuid();
+			const user = await User.findOne({ username });
+			if (user) {
+				user.point += 10;
+				await user.save();
+			}
 			const newOrder = {
 				fullname,
 				phonenumber,
@@ -159,7 +191,7 @@ class CartController {
 			const qrCode = await QRCode.toDataURL(url);
 			await Order.create(newOrder);
 			await Cart.deleteMany();
-			res.render("order_success", {
+			res.render("cart/order_success", {
 				qrCode,
 				fullname,
 				phonenumber,

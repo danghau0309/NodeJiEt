@@ -1,6 +1,6 @@
 <section class="detail" id="detail">
 	<button class="back-home"><a href="/">Quay lại</a></button>
-	<div class="box-detail">
+	<form class="box-detail" action="/cart/addToCart/{{showDetail._id}}" method="POST">
 		<div class="detail-col1">
 			<img src="../img/{{showDetail.image}}" alt="" />
 		</div>
@@ -15,7 +15,7 @@
 			<button id="addCart">Mua ngay</button>
 		</div>
 
-	</div>
+	</form>
 	<div id="notifi"></div>
 
 	<form class="comments" method="POST">

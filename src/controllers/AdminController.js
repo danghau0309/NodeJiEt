@@ -14,7 +14,6 @@ class AdminController {
 		const orderDetail = await Order.findById(id);
 		const custommerOfOrder = orderDetail.customerOrder;
 		res.render("admin/orderDetail", { custommerOfOrder });
-		// res.status(200).json(custommerOfOrder);
 	}
 	async order_confirmation(req, res, next) {
 		const { id } = req.params;

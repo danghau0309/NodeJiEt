@@ -16,6 +16,14 @@
 				class="username"
 				disabled
 			/>
+			<input
+				type="text"
+				value="Point : {{userProfile.point}}"
+				name="username"
+				class="username"
+				disabled
+			/>
+			<i class="bx bxl-bitcoin" id="bxl-bitcoin"></i>
 
 		</div>
 		<input
@@ -46,13 +54,19 @@
 			disabled
 		/>
 		<hr id="lineProfile" />
-		<input
-			type="text"
-			placeholder="Đổi mật khẩu"
-			class="changePassword inputProfile"
-			name="password"
-			value="{{userProfile.password}}"
-		/>
+		<div class="check_eye">
+			<input
+				type="password"
+				placeholder="Đổi mật khẩu"
+				class="changePassword inputProfile"
+				name="password"
+				value="{{userProfile.password}}"
+				id="password-input"
+			/>
+			<i class="fa-regular fa-eye"></i>
+			<i class="fa-solid fa-eye-slash" id="fa-eye-slash"></i>
+			<a href="/profile/changePassword"><i class="fa-regular fa-pen-to-square"></i></a>
+		</div>
 		<hr id="lineProfile" />
 		<button id="updateProfile" type="submit">Cập nhật thông tin</button>
 	</form>

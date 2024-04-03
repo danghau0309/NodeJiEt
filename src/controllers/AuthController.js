@@ -1,7 +1,9 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
-const Swal = require("sweetalert2");
+const nodemailer = require("nodemailer");
+require("dotenv").config();
+const otpGenerator = require("otp-generator");
 class AuthController {
 	renderLogin(req, res) {
 		res.render("auth/login");
@@ -24,7 +26,73 @@ class AuthController {
 			res.status(400).send("Error ...");
 		}
 	}
-
+	restore_password(req, res) {
+		res.render("auth/forget_password");
+	}
+	async forgotPassword(req, res) {
+		const { email } = req.body;
+		try {
+			const otp = otpGenerator.generate(6, {
+				upperCaseAlphabets: false,
+				specialChars: false
+			});
+			const transporter = nodemailer.createTransport({
+				service: "Gmail",
+				auth: {
+					user: process.env.EMAIL_ADDRESS,
+					pass: process.env.APP_PASSWORD
+				}
+			});
+			const mailOptions = {
+				from: process.env.EMAIL_ADDRESS,
+				to: `${email}`,
+				subject: "Sending Email using Node.js",
+				html: `<div class="container-otp" style="display: grid;text-align: center;border: 1px solid red;border-radius: 1rem;">
+				<h2>YOUR OTP : </h2>
+				<p>YOUR OTP IS : <span class="otp" style="color:red; font-size:1.3rem;">${otp}</span></p>
+			</div>`
+			};
+			transporter.sendMail(mailOptions, (error, info) => {
+				if (error) {
+					res.status(500).json({ message: error.message });
+				} else {
+					console.log("Email sent: " + info.response);
+					res.render("auth/otp", { otp, email });
+				}
+			});
+		} catch (error) {
+			res.status(500).json({ message: error.message });
+		}
+	}
+	async cofirmOtp(req, res, next) {
+		const { customersOtp, otp, email } = req.body;
+		try {
+			if (customersOtp === otp) {
+				res.render("auth/changePassword", { email });
+			} else {
+				res.status(403).json({ message: "OTP failed ! " });
+			}
+		} catch (err) {
+			res.status(500).json({ message: err.message });
+		}
+	}
+	async changePassword(req, res, next) {
+		const { newPassword, enterPassword, email } = req.body;
+		try {
+			if (newPassword === enterPassword) {
+				const changeUserPassword = await User.findOneAndUpdate(
+					{ email },
+					{ password: newPassword },
+					{ new: true }
+				);
+				res.status(200).send("Updated successfully");
+			} else {
+				res.status(403).json("Passwords are not the same");
+			}
+		} catch (error) {
+			res.status(500).json({ message: error.message });
+		}
+	}
 	// GET auth/signup
 	signup(req, res) {
 		res.render("auth/signup");

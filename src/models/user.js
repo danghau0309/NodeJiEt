@@ -12,7 +12,9 @@ const users = new Schema(
 		fullname: { type: "string" },
 		phonenumber: { type: "string" },
 		sex: { type: "string" },
-		address: { type: "string" }
+		address: { type: "string" },
+		point: Number,
+		voucherList: Array
 	},
 	{
 		timestamps: true

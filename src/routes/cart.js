@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const cartController = require("../controllers/CartController");
+router.post("/increase/:id", cartController.increase);
+router.post("/decrease/:id", cartController.decrease);
 router.post("/form_user/", cartController.form_user);
 router.post("/payment/", cartController.payment);
 router.post("/infor_older/", cartController.infor_older);

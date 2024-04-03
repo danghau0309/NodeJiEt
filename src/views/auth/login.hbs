@@ -5,14 +5,18 @@
 		</div>
 		<div class="item2">
 			<div class="item-right">
-				<h2>dev_snake</h2>
-				<span class="geeting">Welcome Back!</span>
+				<h2>Đăng nhập</h2>
+				<span class="geeting">Welcome to my wedsite !</span>
 				<form class="form-login" method="POST" action="login/handleLogin">
 					<input type="text" placeholder="Enter Username" name="username" />
 					<input type="password" placeholder="Enter password" name="password" />
 
 					<button id="btnSignIn" type="submit">Sign In</button>
-					<span class="link">Don't have Account? <a href="/auth/signup">SignUp</a></span>
+					<div class="forgetPassword">
+						<span class="link">Don't have Account?
+							<a href="/auth/signup">SignUp</a></span>
+						<a href="/auth/restore-password"><span>Quên mật khẩu</span></a>
+					</div>
 				</form>
 				<div class="option-login">
 					<a href="/auth/google"><button><i class="bx bxl-google"></i>
