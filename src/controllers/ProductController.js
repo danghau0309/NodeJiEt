@@ -1,6 +1,7 @@
 const Product = require("../models/product");
 const Cart = require("../models/cart");
 const moment = require("moment");
+const authenticateToken = require("../middleware/authenticateToken");
 
 class ProductController {
 	async productDetail(req, res, next) {

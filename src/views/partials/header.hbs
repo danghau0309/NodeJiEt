@@ -8,9 +8,9 @@
 	</ul>
 	<div class="header-icons">
 		{{#if isLoggedIn}}
-			<span id="icon-user">Member</span>
+			<span id="icon-user">{{username}}</span>
 		{{else}}
-			<span id="icon-user">Login</span>
+			<span id="icon-user" class="icon-user">Login</span>
 		{{/if}}
 	</div>
 	<div class="box-auth" id="box-auth">

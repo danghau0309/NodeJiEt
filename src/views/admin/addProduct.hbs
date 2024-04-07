@@ -1,9 +1,9 @@
-<section>
+<section id="admin_crud">
 	<div class="wrapper">
 		<div class="card-left">
 			<div class="card-item">
 				<h3>Thêm sản phẩm</h3>
-				<form action="" method="POST" enctype="multipart/form-data">
+				<form action="/admin/CRUD" method="POST" enctype="multipart/form-data">
 					<label for="">Tên sản phẩm :</label><br />
 					<input type="text" placeholder="Tên sản phẩm" name="name" /><br />
 					<label for="">Giá :</label><br />
@@ -23,6 +23,7 @@
 						<th>Tên sản phẩm</th>
 						<th>Hình ảnh</th>
 						<th>Giá</th>
+						<th>SL Mua</th>
 						<th>Mô Tả</th>
 					</tr>
 				</thead>
@@ -32,10 +33,12 @@
 							<td>{{this.name}}</td>
 							<td><img src="../img/{{this.image}}" alt="" class="img-admin" /> </td>
 							<td class="price-admin">{{this.price}} $</td>
+							<td>{{this.number_of_orders}}</td>
 							<td>{{this.description}}</td>
 							<td class="action">
-								<button class="bx bx-trash" onclick="deleteItem('{{this._id}}')">
-								</button>
+								<form action="delete/{{this._id}}" method="post">
+									<button class="bx bx-trash" type="submit"></button>
+								</form>
 								<a href="/admin/{{this._id}}/edit">
 									<i class="bx bx-edit-alt"></i>
 								</a>

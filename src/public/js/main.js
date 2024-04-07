@@ -58,3 +58,61 @@ copyBtn.forEach((item) => {
 			});
 	});
 });
+//
+const myPlot = document.getElementById("myPlot");
+const xArray = [
+	"Tai nghe thông minh",
+	"Tai nghe không dây",
+	"Tai nghe thể thao",
+	"Tai nghe có dây"
+];
+const yArray = [55, 49, 44, 24, 15];
+
+const data = [
+	{
+		x: xArray,
+		y: yArray,
+		type: "bar",
+		orientation: "v",
+		marker: { color: "rgba(0,0,255,0.6)" }
+	}
+];
+
+const layout = { title: "Thông tin các loại tai nghe" };
+if (myPlot) {
+	Plotly.newPlot("myPlot", data, layout);
+	//
+	google.charts.load("current", { packages: ["corechart"] });
+	google.charts.setOnLoadCallback(() => {
+		Promise.all([
+			fetch("http://localhost:3000/lab/cate/1").then((res) => res.json()),
+			fetch("http://localhost:3000/lab/cate/2").then((res) => res.json()),
+			fetch("http://localhost:3000/lab/cate/3").then((res) => res.json()),
+			fetch("http://localhost:3000/lab/cate/4").then((res) => res.json())
+		])
+			.then(([data1, data2, data3, data4]) => {
+				const cate1 = data1.length;
+				const cate2 = data2.length;
+				const cate3 = data3.length;
+				const cate4 = data4.length;
+				drawChart(cate1, cate2, cate3, cate4);
+			})
+			.catch((err) => console.log(err));
+	});
+
+	function drawChart(cate1, cate2, cate3, cate4) {
+		const data = google.visualization.arrayToDataTable([
+			["Tai nghe", "Mhl"],
+			["Tai nghe không dây", cate3],
+			["Tai nghe thể thao", cate2],
+			["Tai nghe có dây", cate4],
+			["Tai nghe thông minh", cate1]
+		]);
+		const options = {
+			title: "Thông tin tai nghe",
+			is3D: true
+		};
+		const chart = new google.visualization.PieChart(document.getElementById("myChart"));
+		chart.draw(data, options);
+	}
+}

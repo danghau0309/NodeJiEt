@@ -13,7 +13,8 @@ const product = new Schema(
 		slug: { type: String, slug: "name", unique: true },
 		view: Number,
 		comments: Array,
-		category_id: Number
+		category_id: Number,
+		number_of_orders: Number
 	},
 	{
 		timestamps: true

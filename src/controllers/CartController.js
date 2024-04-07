@@ -11,12 +11,28 @@ class CartController {
 	async cart(req, res, next) {
 		try {
 			const cartList = await Cart.find({});
+			let checkCart;
+			let text;
+			if (cartList.length <= 0) {
+				checkCart = false;
+				text = "Vui lòng thêm sản phẩm vào giỏ hàng !";
+			} else {
+				checkCart = true;
+			}
 			const cartItems = await Cart.find();
 			const subTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
 			const shipping = 35;
 			const total = subTotal + shipping;
 			const voucher = req.session.voucherCode;
-			res.render("cart/cart", { cartList, subTotal, shipping, total, voucher });
+			res.render("cart/cart", {
+				cartList,
+				subTotal,
+				shipping,
+				total,
+				voucher,
+				checkCart,
+				text
+			});
 		} catch (err) {
 			res.status(404).json({ message: err });
 		}
@@ -106,15 +122,18 @@ class CartController {
 		const subTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
 		const shipping = 35;
 		const sum = subTotal + shipping;
-		res.render("cart/payment_infor", { cartItems, subTotal, sum });
+		res.render("cart/form_user", { cartItems, subTotal, sum });
 	}
-	async infor_older(req, res, next) {
+	async infor_order(req, res, next) {
 		try {
 			const { fullname, phonenumber, city, district, email } = req.body;
-
+			if (!fullname || !phonenumber || !city || !district || !email) {
+				res.status(403).send("Vui lòng nhập thông tin đầy đủ !");
+			}
 			const cartItems = await Cart.find({});
 			const subTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
-			const sum = subTotal + 35;
+			const shipping = 35;
+			const sum = subTotal + shipping;
 			req.session.customerOlder = {
 				fullname,
 				phonenumber,
@@ -122,7 +141,7 @@ class CartController {
 				district,
 				email
 			};
-			res.render("cart/infor_older.hbs", {
+			res.render("cart/infor_order", {
 				customerOlder: req.session.customerOlder,
 				sum
 			});
@@ -130,25 +149,88 @@ class CartController {
 			res.status(500).json({ message: err.message });
 		}
 	}
-	async infor_older_voucher(req, res) {
+	// async infor_older_voucher(req, res) {
+	// 	const { voucher_code } = req.body;
+	// 	const cartItems = await Cart.find({});
+	// 	const subTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
+	// 	const findVoucher = await Voucher.findOne({ voucher_code: voucher_code });
+	// 	if (!findVoucher) {
+	// 		return res.status(404).send("Voucher code not found !!");
+	// 	}
+	// 	const user = await User.findOne({ username: req.session.username });
+	// 	if (!user) {
+	// 		return res.status(404).send("User not found !!");
+	// 	}
+	// 	console.log(user);
+	// 	const voucherIndex = user.voucherList.indexOf(voucher_code);
+	// 	console.log(user.voucherList);
+	// 	console.log(voucherIndex);
+	// 	console.log(voucher_code);
+	// 	if (voucherIndex !== -1) {
+	// 		user.voucherList.splice(voucherIndex, 1);
+	// 		await user.save();
+	// 	}
+	// 	if (findVoucher.voucher_code === "SALE50%") {
+	// 		const customerOlder = req.session.customerOlder;
+	// 		const cartItems = await Cart.find();
+	// 		const subTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
+	// 		const shipping = 35;
+	// 		const sum = subTotal / 2 + shipping;
+	// 		res.render("cart/infor_older", { customerOlder, sum });
+	// 	} else {
+	// 		res.send("Ưu đãi khác ");
+	// 	}
+	// }
+	async infor_order_voucher(req, res) {
 		const { voucher_code } = req.body;
 		const cartItems = await Cart.find({});
 		const subTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
 		const findVoucher = await Voucher.findOne({ voucher_code: voucher_code });
 		if (!findVoucher) {
-			return res.status(404).json({ message: "Voucher code not found !!" });
+			return res.status(404).send("Voucher code not found !!");
+		}
+		const user = await User.findOne({ username: req.session.username });
+		if (user) {
+			let voucherIndex = -1;
+			for (let i = 0; i < user.voucherList.length; i++) {
+				if (user.voucherList[i].voucher_code === voucher_code) {
+					voucherIndex = i;
+					break;
+				}
+			}
+			if (voucherIndex !== -1) {
+				user.voucherList.splice(voucherIndex, 1);
+				await user.save();
+			}
 		}
 		if (findVoucher.voucher_code === "SALE50%") {
 			const customerOlder = req.session.customerOlder;
-			const cartItems = await Cart.find();
-			const subTotal = cartItems.reduce((sum, item) => sum + item.total, 0);
 			const shipping = 35;
 			const sum = subTotal / 2 + shipping;
-			res.render("cart/infor_older", { customerOlder, sum });
+			res.render("cart/infor_order", { customerOlder, sum });
+		} else if (findVoucher.voucher_code === "kjfyo12f") {
+			const customerOlder = req.session.customerOlder;
+			const shipping = 35;
+			const sum = subTotal - subTotal * (20 / 100) + shipping;
+			res.render("cart/infor_order", { customerOlder, sum });
+		} else if (findVoucher.voucher_code === "kJhdie198d") {
+			const customerOlder = req.session.customerOlder;
+			const shipping = 35;
+			const sum = subTotal - subTotal * (10 / 100) + shipping;
+			res.render("cart/infor_order", { customerOlder, sum });
+		} else if (findVoucher.voucher_code === "jhjTGH182f") {
+			const customerOlder = req.session.customerOlder;
+			const shipping = 35;
+			const sum = subTotal - subTotal * (40 / 100) + shipping;
+			res.render("cart/infor_order", { customerOlder, sum });
 		} else {
-			res.send("Ưu đãi khác ");
+			const customerOlder = req.session.customerOlder;
+			const shipping = 35;
+			const sum = subTotal - subTotal * (20 / 100) + shipping;
+			res.render("cart/infor_order", { customerOlder, sum });
 		}
 	}
+
 	async payment(req, res, next) {
 		const { fullname, phonenumber, email, city, district, total, paymentMethod } = req.body;
 		try {
@@ -157,6 +239,17 @@ class CartController {
 			const customerOrder = await Cart.find({});
 			const username = req.session.username;
 			const order_id = uuid();
+			const cartItemId = await Cart.find();
+			const product = await Product.find();
+			for (let i = 0; i < cartItemId.length; i++) {
+				for (let j = 0; j < product.length; j++) {
+					if (cartItemId[i].name === product[j].name) {
+						product[j].number_of_orders += 1;
+						await product[j].save();
+						break;
+					}
+				}
+			}
 			const user = await User.findOne({ username });
 			if (user) {
 				user.point += 10;
@@ -182,7 +275,6 @@ class CartController {
 			} else if (paymentMethod === "momo") {
 				link_icon = "https://cdn2.cellphones.com.vn/x/media/logo/gw2/momo_vi.png";
 			} else if (paymentMethod === "shopeepay") {
-				console.log("shoppepay");
 				link_icon = "https://cdn2.cellphones.com.vn/x/media/logo/gw2/shopeepay.png";
 			} else {
 				link_icon = "https://cdn2.cellphones.com.vn/x/media/logo/gw2/vnpay.png";

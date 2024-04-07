@@ -16,9 +16,11 @@ app.use(
 	session({
 		secret: "keyboard cat",
 		resave: false,
-		saveUninitialized: true
+		saveUninitialized: true,
+		cookie: { maxAge: 3600000 }
 	})
 );
+
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 passport.use(
@@ -45,6 +47,8 @@ app.use(passport.session());
 app.use((req, res, next) => {
 	if (req.session.isLoggedIn) {
 		res.locals.isLoggedIn = req.session.isLoggedIn;
+		res.locals.username = req.session.username;
+		const username = req.session.username;
 	} else {
 		req.session.isLoggedIn = false;
 		res.locals.isLoggedIn = false;

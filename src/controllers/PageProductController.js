@@ -15,7 +15,6 @@ class PageProductController {
 			const categoryList = await Categories.find({});
 			const { id } = req.params;
 			const productList = await Product.find({ category_id: id });
-			console.log(productList);
 			res.render("category/categorylist", { productList, categoryList });
 		} catch (error) {
 			console.error(error);
@@ -26,9 +25,7 @@ class PageProductController {
 		try {
 			const categoryList = await Categories.find({});
 			const arrProduct = await Product.find();
-			const lowTohighPrice = arrProduct.sort((a, b) => {
-				return a.price - b.price;
-			});
+			const lowTohighPrice = arrProduct.sort((a, b) => a.price - b.price);
 			res.render("category/lowTohigh", { lowTohighPrice, categoryList });
 		} catch (error) {
 			console.error(error);

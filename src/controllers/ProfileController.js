@@ -2,6 +2,7 @@ const passport = require("passport");
 const User = require("../models/user");
 const Order = require("../models/orders");
 const Voucher = require("../models/voucher");
+const bcrypt = require("bcrypt");
 class ProfileController {
 	async profile(req, res, next) {
 		const userProfile = await User.findOne({ username: req.session.username });
@@ -79,19 +80,21 @@ class ProfileController {
 	async handleChangePassword(req, res, next) {
 		try {
 			const { oldPassword, newPassword, enterPassword } = req.body;
+			const saltRounds = 10;
 			const username = req.session.username;
 			const findUser = await User.findOne({ username: username });
-			console.log(findUser);
-			if (oldPassword === findUser.password && newPassword === enterPassword) {
+			const passwordMatch = await bcrypt.compare(oldPassword, findUser.password);
+			const hashNewPassword = await bcrypt.hash(newPassword, saltRounds);
+			if (passwordMatch && newPassword === enterPassword) {
 				await User.findOneAndUpdate(
 					{ username: req.session.username },
-					{ password: newPassword },
+					{ password: hashNewPassword },
 					{
 						new: true
 					}
 				);
 				return res.status(200).redirect("/profile");
-			} else if (oldPassword !== findUser.password) {
+			} else if (!passwordMatch) {
 				res.status(403).json({ message: "Mật khẩu cũ nhập không đúng !" });
 			} else if (newPassword !== enterPassword) {
 				res.status(403).json({ message: "Mật khẩu nhập không trùng nhau !" });

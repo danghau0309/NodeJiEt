@@ -1,8 +1,70 @@
 const Product = require("../models/product");
 const Order = require("../models/orders");
+const User = require("../models/user");
 class AdminController {
-	admin(req, res, next) {
-		res.render("admin/home");
+	async admin(req, res, next) {
+		try {
+			const user = await User.findOne({ username: req.session.username });
+			if (!user) {
+				res.status(404).send("Please Login before entering Admin");
+			} else if (Number(user.role) !== 1) {
+				res.status(404).send("Your account is not allowed to Admin");
+			} else {
+				res.render("admin/home");
+			}
+		} catch (error) {
+			console.error(error);
+			res.status(404).send(error.message);
+		}
+	}
+	async user_manager(req, res, next) {
+		try {
+			const userList = await User.find({});
+			res.render("admin/users_manager", { userList });
+		} catch (error) {
+			console.error(error);
+			res.status(404).send(error.message);
+		}
+	}
+	async user_managerLock(req, res, next) {
+		try {
+			const { id } = req.params;
+			const user = await User.findById(id);
+			if (user.user_status === "Đang hoạt động" && user.role === "Người dùng") {
+				user.user_status = "Tài khoản bị khóa";
+				await user.save();
+				res.redirect("/admin/user_manager");
+			} else if (user.user_status === "Tài khoản bị khóa") {
+				res.send("Tài này đã khóa rồi");
+			} else {
+				res.status(200).send("Tài khoản này không được Khóa");
+			}
+		} catch (error) {
+			console.error(error);
+			res.status(404).send(error.message);
+		}
+	}
+	async statistical(req, res, next) {
+		try {
+			res.render("statistical/statistical");
+		} catch (error) {
+			console.log(error);
+			res.status(404).send(error.message);
+		}
+	}
+	async user_managerOpen(req, res, next) {
+		try {
+			const { id } = req.params;
+			const user = await User.findById(id);
+			if (user.user_status === "Tài khoản bị khóa") {
+				user.user_status = "Đang hoạt động";
+				user.save();
+				res.redirect("/admin/user_manager");
+			}
+		} catch (error) {
+			console.error(error);
+			res.status(404).send(error.message);
+		}
 	}
 	async showOrderManager(req, res, next) {
 		const orderList = await Order.find({});
@@ -31,7 +93,7 @@ class AdminController {
 		}
 	}
 
-	async showProduct(req, res, next) {
+	async showCRUD(req, res, next) {
 		try {
 			const productList = await Product.find({});
 			res.render("admin/addProduct", { productList });
@@ -41,7 +103,7 @@ class AdminController {
 		}
 	}
 
-	async addProduct(req, res, next) {
+	async CRUD(req, res, next) {
 		try {
 			console.log(req.file);
 			const { name, price, description, image } = req.body;
@@ -57,7 +119,7 @@ class AdminController {
 				view: 1,
 				category_id: 2
 			});
-			res.redirect("/admin/addProduct");
+			res.redirect("/admin/CRUD");
 		} catch (error) {
 			console.error("ERROR: ", error);
 			res.status(500).send("Có lỗi xảy ra khi thêm sản phẩm.");
@@ -65,7 +127,6 @@ class AdminController {
 	}
 
 	async editProduct(req, res, next) {
-		console.dir(req.query.deleteId);
 		try {
 			const productList = await Product.find({});
 			const valueInput = await Product.findById(req.params.id);
@@ -88,11 +149,16 @@ class AdminController {
 			await Product.findOneAndUpdate({ _id: req.params.id }, dataUpdate, {
 				new: true
 			});
-			res.redirect("/admin/addProduct");
+			res.redirect("/admin/CRUD");
 		} catch (error) {
 			console.error("ERROR: ", error);
 			res.status(404).send("Failed to update");
 		}
+	}
+	async deleteProduct(req, res, next) {
+		const { id } = req.params;
+		await Product.findByIdAndDelete(id);
+		res.status(200).redirect("/admin/CRUD");
 	}
 }
 

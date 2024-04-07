@@ -4,28 +4,81 @@ const passport = require("passport");
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 const otpGenerator = require("otp-generator");
+const otplib = require("otplib");
+const { waring, success } = require("../../toast/display.message");
 class AuthController {
 	renderLogin(req, res) {
 		res.render("auth/login");
 	}
 	async login(req, res) {
 		const { username, password } = req.body;
-		if (!username || !password) {
-			res.status(403).send({ message: "Lỗi rồi dm !" });
-		}
 		try {
-			const user = await User.findOne({ username, password });
-			if (user) {
+			if (!username || !password) {
+				return res.status(403).send(waring);
+			}
+			const user = await User.findOne({ username });
+			if (!user) {
+				return res.status(401).send("Tên người dùng hoặc mật khẩu không đúng");
+			}
+			const isCheckPassword = await bcrypt.compare(password, user.password);
+			if (isCheckPassword && user.user_status === "Đang hoạt động") {
 				req.session.isLoggedIn = true;
 				req.session.username = user.username;
-				res.status(200).redirect("/");
+				return res.status(200).redirect("/");
+			} else if (user.user_status === "Tài khoản bị khóa") {
+				return res.status(403).send("Tài khoản của bạn đã bị khóa");
 			} else {
-				res.status(401).send("Invalid username or password");
+				return res.status(401).send("Tên người dùng hoặc mật khẩu không đúng");
 			}
 		} catch (err) {
-			res.status(400).send("Error ...");
+			console.error("Lỗi khi đăng nhập:", err);
+			return res.status(400).send(err.message);
 		}
 	}
+	test(req, res, next) {
+		console.log(req.user);
+		res.json({ status: "Success", data: req.user });
+	}
+	signup(req, res) {
+		res.render("auth/signup");
+	}
+	async register(req, res, next) {
+		try {
+			const { fullname, username, password, email, address } = req.body;
+			if (!username || !password || !email || !fullname || !address) {
+				return res.status(400).send({ message: "errr ........" });
+			}
+			if (password.length < 8) {
+				return res.status(400).json({ message: "Password is Maximum 8 charecters " });
+			}
+			if (!/^\S+@\S+\.\S+$/.test(email)) {
+				return res.status(400).json({ message: "Invalid email format" });
+			}
+			const saltRounds = 10;
+			const salt = await bcrypt.genSalt(saltRounds);
+			const hashPassword = await bcrypt.hash(password, salt);
+			const newUser = new User({
+				fullname,
+				username,
+				password: hashPassword,
+				email,
+				address,
+				userImage: req.file.originalname,
+				user_status: "Đang hoạt động"
+			});
+			await newUser.save();
+			res.redirect("/auth/login");
+		} catch (error) {
+			console.error("Error:", error);
+			return res.status(500).json({ message: "Internal server error" });
+		}
+	}
+	logout(req, res, next) {
+		req.session.destroy((err) => {
+			res.redirect("/");
+		});
+	}
+
 	restore_password(req, res) {
 		res.render("auth/forget_password");
 	}
@@ -64,6 +117,7 @@ class AuthController {
 			res.status(500).json({ message: error.message });
 		}
 	}
+
 	async cofirmOtp(req, res, next) {
 		const { customersOtp, otp, email } = req.body;
 		try {
@@ -80,11 +134,8 @@ class AuthController {
 		const { newPassword, enterPassword, email } = req.body;
 		try {
 			if (newPassword === enterPassword) {
-				const changeUserPassword = await User.findOneAndUpdate(
-					{ email },
-					{ password: newPassword },
-					{ new: true }
-				);
+				const hashPassword = await bcrypt.hash(newPassword, 10);
+				await User.findOneAndUpdate({ email }, { password: hashPassword }, { new: true });
 				res.status(200).send("Updated successfully");
 			} else {
 				res.status(403).json("Passwords are not the same");
@@ -93,43 +144,7 @@ class AuthController {
 			res.status(500).json({ message: error.message });
 		}
 	}
-	// GET auth/signup
-	signup(req, res) {
-		res.render("auth/signup");
-	}
-	//POST auth/signup/register
-	async register(req, res, next) {
-		try {
-			const { fullname, username, password, email, address, userImage } = req.body;
-			if (!username || !password || !email || !fullname || !address) {
-				return res.status(400).send({ message: "errr ........" });
-			}
-			if (password.length < 8) {
-				return res.status(400).json({ message: "Password is Maximum 8 charecters " });
-			}
-			if (!/^\S+@\S+\.\S+$/.test(email)) {
-				return res.status(400).json({ message: "Invalid email format" });
-			}
-			const newUser = new User({
-				fullname,
-				username,
-				password,
-				email,
-				address,
-				userImage: req.file.originalname
-			});
-			await newUser.save();
-			res.redirect("/auth/login");
-		} catch (error) {
-			console.error("Error:", error);
-			return res.status(500).json({ message: "Internal server error" });
-		}
-	}
-	logout(req, res, next) {
-		req.session.destroy((err) => {
-			res.redirect("/");
-		});
-	}
+
 	googleCallback(req, res, next) {
 		try {
 			passport.authenticate("google", {

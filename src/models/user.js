@@ -13,8 +13,9 @@ const users = new Schema(
 		phonenumber: { type: "string" },
 		sex: { type: "string" },
 		address: { type: "string" },
-		point: Number,
-		voucherList: Array
+		point: { type: Number, default: 0 },
+		voucherList: Array,
+		user_status: String
 	},
 	{
 		timestamps: true

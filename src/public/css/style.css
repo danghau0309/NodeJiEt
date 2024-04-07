@@ -122,12 +122,14 @@ header a img {
 .header-icons span {
     background: var(--main-color);
     color: var(--text-color);
-    padding: 8px;
+    padding: 0.5rem 1rem;
     border-radius: 1.5rem;
-
-    width: 100px;
     display: block;
     cursor: pointer;
+}
+
+.icon-user {
+    width: 100px;
 }
 
 .service .title {
@@ -181,9 +183,15 @@ header a img {
 }
 
 .home-image img {
-    width: 500px;
-    height: 380px;
+    width: 100%;
     object-fit: cover;
+}
+
+.userImage {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    padding: 10px;
 }
 
 .home-infor .title,
@@ -222,8 +230,8 @@ header a img {
 }
 
 .box {
-    width: 300px;
-    margin-top: 30px;
+
+    margin-top: 2rem;
     background: var(--second-color);
     padding: 10px;
     border-radius: var(--border-radius);
@@ -386,8 +394,8 @@ header a img {
 .box-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(285px, auto));
-    gap: 1.5rem;
-    margin-top: 2rem;
+    gap: 2rem;
+    align-items: center;
 }
 
 /* category */
@@ -594,18 +602,23 @@ form #btnSignIn {
     }
 }
 
+#admin_crud {
+    margin-top: 8rem;
+    margin-bottom: 10rem;
+}
+
 .wrapper {
     position: relative;
     width: 100%;
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     column-gap: 50px;
+    display: grid;
+    grid-template-columns: 1fr 2.5fr;
 }
 
 .card-left {
-    width: 500px;
     height: 640px;
     background: #fff;
     border-radius: 16px;
@@ -613,7 +626,6 @@ form #btnSignIn {
 }
 
 .card-right {
-    width: 900px;
     height: 640px;
     background: #fff;
     border-radius: 16px;
@@ -756,8 +768,13 @@ form label {
 }
 
 .action {
+
     padding: 10px;
     width: 80px;
+}
+
+.action form {
+    display: inline-block;
 }
 
 .action button {
@@ -934,9 +951,16 @@ form label {
 /* cart */
 .cart-container {
     margin-top: 5.3rem;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
     margin-bottom: 25rem;
+    /* gap: 3rem; */
+    column-gap: 5rem;
+    padding: 1rem;
+}
+
+.cart-item2 {
+    padding: 0 1rem;
 }
 
 #delete_cart {
@@ -955,9 +979,8 @@ form label {
     font-weight: 500;
 }
 
-.cart-container .cart-item1 {
-    width: 1000px;
-    margin-left: 1rem;
+.cart-item1 {
+    padding: 0 1rem;
 }
 
 .checkout-container h2 {
@@ -974,6 +997,11 @@ form label {
     border: 2px solid #eee;
     border-radius: 16px;
     padding: 20px;
+    position: relative;
+}
+
+.text-waring {
+    text-align: center;
 }
 
 .cart-item1 table {
@@ -981,6 +1009,7 @@ form label {
     padding: 10px;
     border-radius: 16px;
 }
+
 
 .cart-item1 table tr td img {
     width: 100px;
@@ -1019,10 +1048,7 @@ td .bxs-x-circle {
     cursor: pointer;
 }
 
-.cart-item2 {
-    width: 400px;
-    margin-right: 2rem;
-}
+
 
 .checkout-container {
     width: 100%;
@@ -1863,9 +1889,83 @@ td {
     text-overflow: ellipsis;
 }
 
+#handleAuth form {
+    display: inline-block;
+}
 
+#handleAuth #open,
+#lock-up {
+    width: 4rem;
+    height: 2rem;
+    border: 0;
+    border-radius: 1rem;
+    font-size: 1rem;
+}
+
+#handleAuth #open {
+    background-color:
+        #18c964;
+    color: #fff;
+    cursor: pointer;
+}
+
+#handleAuth #lock-up {
+    background: #000;
+    color: hsl(339 90% 61%);
+    background-color: hsl(339 90% 51% / 0.2);
+    cursor: pointer;
+}
+
+.statistical {
+    margin-top: 5rem;
+    margin-bottom: 10rem;
+    position: relative;
+    width: 100%;
+}
+
+.container_statistical {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    align-items: center;
+    padding: 10px;
+    box-shadow: var(--box-shadow);
+    border-radius: 1rem;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.btn_chart {
+    padding: 10px 20px;
+    border: none;
+    background: var(--main-color);
+    color: var(--text-color);
+    border-radius: 1rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+#myChart {
+    max-width: 100%;
+    height: 600px;
+}
+
+#myPlot {
+    max-width: 100%;
+    height: 600px;
+
+}
 
 /* admin */
+.toast-waring {
+    max-width: 400px;
+    margin: 5rem auto;
+
+}
+
+.fa-circle-exclamation {
+    text-align: center;
+    display: block;
+}
 
 /* Profile */
 

@@ -4,28 +4,35 @@
 			<h2>Giỏ hàng</h2>
 			<table id="tableList">
 				<tbody id="cartList">
-					{{#each cartList}}
-						<tr>
-							<td><img src="../img/{{this.image}}" alt="" /></td>
-							<td>{{this.name}}</td>
-							<td>
-								<div class="quantity-cart">
-									<form action="/cart/decrease/{{this._id}}" method="POST">
-										<button class="reduce">-</button>
-									</form>
-									<span class="quantity-product">{{this.quantity}}</span>
-									<form action="/cart/increase/{{this._id}}" method="POST">
-										<button class="increase">+</button>
-									</form>
-								</div>
-							</td>
-							<td>Giá : {{this.price}} $</td>
-							<td>Tổng : {{this.total}} $</td>
-							<form action="cart/deleteCart/{{this._id}}" method="POST">
-								<td><button class="bx bxs-x-circle" id="delete_cart"></button></td>
-							</form>
-						</tr>
-					{{/each}}
+					{{#if checkCart}}
+						{{#each cartList}}
+							<tr>
+								<td><img src="../img/{{this.image}}" alt="" /></td>
+								<td>{{this.name}}</td>
+								<td>
+									<div class="quantity-cart">
+										<form action="/cart/decrease/{{this._id}}" method="POST">
+											<button class="reduce">-</button>
+										</form>
+										<span class="quantity-product">{{this.quantity}}</span>
+										<form action="/cart/increase/{{this._id}}" method="POST">
+											<button class="increase">+</button>
+										</form>
+									</div>
+								</td>
+								<td>Giá : {{this.price}} $</td>
+								<td>Tổng : {{this.total}} $</td>
+								<form action="cart/deleteCart/{{this._id}}" method="POST">
+									<td><button
+											class="bx bxs-x-circle"
+											id="delete_cart"
+										></button></td>
+								</form>
+							</tr>
+						{{/each}}
+					{{else}}
+						<div class="text-waring">{{text}}</div>
+					{{/if}}
 				</tbody>
 			</table>
 		</div>
@@ -33,18 +40,7 @@
 		<div class="cart-item2">
 			<div class="checkout-container">
 				<h2>Thanh toán</h2>
-				<form action="/cart" method="POST">
-					<div id="voucher">
-						<input
-							type="text"
-							class="discount"
-							id="discount"
-							placeholder="Enter Code Coupon"
-							name="voucher_code"
-						/>
-						<button id="applyCode">Áp mã</button>
-					</div>
-				</form>
+
 				<form action="cart/form_user" method="POST">
 					<div class="subTotal">
 						<span>Tổng tiền sản phẩm </span>
@@ -59,13 +55,11 @@
 						<span>Tổng tiền thanh toán : </span>
 						<span id="totalPrice">{{total}} $</span>
 					</div>
-					{{#if voucher}}
-						<div class="appliedCode">
-							<span>Giá sau khi áp mã : </span>
-							<span>{{voucher}} $</span>
-						</div>
+					{{#if checkCart}}
+						<button id="checkOut" type="submit">Tiến hành thanh toán</button>
+					{{else}}
+						<button id="checkOut" type="submit" disabled>Tiến hành thanh toán</button>
 					{{/if}}
-					<button id="checkOut" type="submit">Tiến hành thanh toán</button>
 				</form>
 			</div>
 		</div>
