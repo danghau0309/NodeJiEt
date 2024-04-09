@@ -49,7 +49,7 @@ class ProfileController {
 			const user = await User.findOne({ username });
 			const findExchangeValue = await Voucher.findById(id);
 			if (!user) {
-				res.status(404).send("User not found");
+				res.status(404).redirect("/?userNotFound=true");
 			} else {
 				const { exchange_value } = findExchangeValue;
 				const { point, voucherList } = user;
@@ -57,7 +57,7 @@ class ProfileController {
 					voucher._id.equals(findExchangeValue._id)
 				);
 				if (isVoucherAlreadyExchanged) {
-					res.status(400).send("Bạn đã đổi voucher này rồi !");
+					res.status(400).redirect("/profile/exchange?isVoucherAlreadyExchanged=true");
 					return;
 				}
 				if (point >= exchange_value) {
@@ -68,18 +68,21 @@ class ProfileController {
 						{ point: updatedPoint, voucherList },
 						{ new: true }
 					);
-					res.status(200).send("Đổi thành công");
+					res.status(200).send(success);
 				} else {
-					res.status(404).send("Bạn không đủ điểm để đổi !");
+					res.status(404).redirect("/profile/exchange?isNotEnoughPoint=true");
 				}
 			}
 		} catch (error) {
-			res.status(500).send(error.message);
+			res.status(500).redirect("/profile/exchange?error=true");
 		}
 	}
 	async handleChangePassword(req, res, next) {
 		try {
 			const { oldPassword, newPassword, enterPassword } = req.body;
+			if (!oldPassword || !newPassword || !enterPassword) {
+				return res.status(403).redirect("/profile/changePassword?error=true");
+			}
 			const saltRounds = 10;
 			const username = req.session.username;
 			const findUser = await User.findOne({ username: username });
@@ -95,16 +98,16 @@ class ProfileController {
 				);
 				return res.status(200).redirect("/profile");
 			} else if (!passwordMatch) {
-				res.status(403).json({ message: "Mật khẩu cũ nhập không đúng !" });
+				res.status(403).redirect("/profile/changePassword?waring=true");
 			} else if (newPassword !== enterPassword) {
-				res.status(403).json({ message: "Mật khẩu nhập không trùng nhau !" });
+				res.status(403).redirect("/profile/changePassword?waring=true");
 			} else if (!oldPassword || !newPassword || !enterPassword) {
-				res.status(403).json({ message: "Vui lòng nhập thông tin đầy đủ" });
+				res.status(403).redirect("/profile/changePassword?waring=true");
 			} else {
-				res.status(403).json({ message: "error ..." });
+				return res.status(404).redirect("/profile/changePassword?error=true");
 			}
 		} catch (error) {
-			res.status(400).json({ error: error.message });
+			return res.status(500).redirect("/profile/changePassword?error=true");
 		}
 	}
 
@@ -117,9 +120,9 @@ class ProfileController {
 				{ fullname, username, email, address },
 				{ new: true }
 			);
-			res.redirect(`/profile`);
+			res.redirect(`/profile?updateProfileSuccess=true`);
 		} catch (err) {
-			res.status(404).json({ message: err.message });
+			res.status(404).redirect("/profile?error=true");
 		}
 	}
 	async my_order(req, res, next) {

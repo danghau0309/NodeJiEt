@@ -33,11 +33,11 @@ class AdminController {
 			if (user.user_status === "Đang hoạt động" && user.role === "Người dùng") {
 				user.user_status = "Tài khoản bị khóa";
 				await user.save();
-				res.redirect("/admin/user_manager");
+				res.status(200).redirect("/admin/user_manager?success=true");
 			} else if (user.user_status === "Tài khoản bị khóa") {
-				res.send("Tài này đã khóa rồi");
+				res.status(200).redirect("/admin/user_manager?warning=true");
 			} else {
-				res.status(200).send("Tài khoản này không được Khóa");
+				res.status(200).redirect("/admin/user_manager?error=true");
 			}
 		} catch (error) {
 			console.error(error);

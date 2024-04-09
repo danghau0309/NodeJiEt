@@ -6,7 +6,6 @@ const { storage, upload } = require("./lib/multer");
 const authenticateToken = require("../middleware/authenticateToken");
 router.get("/signup", authController.signup);
 router.get("/logout", authController.logout);
-router.get("/test", authenticateToken, authController.test);
 router.get("/restore-password", authController.restore_password);
 router.post("/restore-password", authController.forgotPassword);
 router.post("/cofirmOtp", authController.cofirmOtp);
@@ -14,7 +13,7 @@ router.post("/changePassword", authController.changePassword);
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] }));
 router.get("/google/callback", authController.googleCallback);
 router.get("/google/success", authController.success);
-router.post("/signup/addUser", upload.single("userImage"), authController.register);
+router.post("/register", upload.single("userImage"), authController.register);
 router.post("/login/handleLogin", authController.login);
 router.get("/login", authController.renderLogin);
 

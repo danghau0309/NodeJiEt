@@ -2,6 +2,7 @@ const Product = require("../models/product");
 const Cart = require("../models/cart");
 const moment = require("moment");
 const authenticateToken = require("../middleware/authenticateToken");
+const User = require("../models/user");
 
 class ProductController {
 	async productDetail(req, res, next) {
@@ -14,7 +15,10 @@ class ProductController {
 	async showHome(req, res, next) {
 		try {
 			const products = await Product.find({});
-			const bestSelling = await Product.find({ bestselling_Product: 1 });
+			const bestSelling = await Product.find({
+				number_of_orders: { $gte: 2 }
+			});
+			console.log(bestSelling);
 			const productsWithManyViews = await Product.find({ view: { $gte: 50 } });
 			res.render("home", {
 				products,
@@ -25,15 +29,11 @@ class ProductController {
 			next(error);
 		}
 	}
-
-	async apiCart(req, res, next) {
-		const apiCartList = await Cart.find({});
-		res.json(apiCartList);
-	}
 	async comments(req, res, next) {
 		try {
 			const { slug } = req.params;
 			const { content } = req.body;
+			if (!content) return res.status(400).redirect(`/product/${slug}?warning=true`);
 			const product = await Product.findOne({ slug });
 			const commentTime = new Date(Date.now());
 			const formattedTime = moment(commentTime).format("D/M/YYYY HH:mm");

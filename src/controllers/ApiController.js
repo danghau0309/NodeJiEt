@@ -2,6 +2,14 @@ const Product = require("../models/product");
 const User = require("../models/user");
 const Categories = require("../models/categories");
 class ApiController {
+	async getProductSoldList(req, res, next) {
+		try {
+			const products = await Product.find({ number_of_orders: { $gte: 1 } });
+			res.json(products);
+		} catch (error) {
+			next(error);
+		}
+	}
 	async api(req, res, next) {
 		const { id } = req.query;
 		try {
@@ -78,6 +86,7 @@ class ApiController {
 			console.log(error.message);
 		}
 	}
+
 }
 
 module.exports = new ApiController();

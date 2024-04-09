@@ -21,6 +21,26 @@ if (addCart !== null) {
 		}
 	});
 }
+const apiDistrict = async () => {
+	const res = await fetch(
+		"https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json"
+	);
+	const data = await res.json();
+	const city = document.getElementById("city");
+	const district = document.getElementById("district");
+	data.forEach((cityList) => {
+		const { Name } = cityList;
+		if (city !== null && district !== null) {
+			city.innerHTML += `<option value="${Name}">${Name}</option>`;
+			cityList.Districts.forEach((inforDistrict) => {
+				const { Name } = inforDistrict;
+				district.innerHTML += `<option value="${Name}">${Name}</option>`;
+			});
+		}
+	});
+};
+apiDistrict();
+
 let show_eye = document.querySelector(".fa-eye");
 let show_eye_slash = document.getElementById("fa-eye-slash");
 let passwordInput = document.getElementById("password-input");
@@ -60,28 +80,34 @@ copyBtn.forEach((item) => {
 });
 //
 const myPlot = document.getElementById("myPlot");
-const xArray = [
-	"Tai nghe thông minh",
-	"Tai nghe không dây",
-	"Tai nghe thể thao",
-	"Tai nghe có dây"
-];
-const yArray = [55, 49, 44, 24, 15];
+const xArray = [];
+const yArray = [];
+fetch("http://localhost:3000/api/getProductSoldList")
+	.then(res => res.json())
+	.then(data => {
+		data.forEach(item => {
+			xArray.push(item.name);
+			yArray.push(item.number_of_orders);
+		});
 
-const data = [
-	{
-		x: xArray,
-		y: yArray,
-		type: "bar",
-		orientation: "v",
-		marker: { color: "rgba(0,0,255,0.6)" }
-	}
-];
+		const plotData = [
+			{
+				x: xArray,
+				y: yArray,
+				type: "bar",
+				orientation: "v",
+				marker: { color: "#474F7A" }
+			}
+		];
 
-const layout = { title: "Thông tin các loại tai nghe" };
+		const layout = { title: "Thống kê số lượng sản phẩm đã bán" };
+
+		Plotly.newPlot(myPlot, plotData, layout);
+	})
+	.catch(err => console.log(err));
+
 if (myPlot) {
-	Plotly.newPlot("myPlot", data, layout);
-	//
+	Plotly.newPlot("myPlot");
 	google.charts.load("current", { packages: ["corechart"] });
 	google.charts.setOnLoadCallback(() => {
 		Promise.all([
