@@ -3,6 +3,13 @@ const Categories = require("../models/categories");
 class PageProductController {
 	async pageProduct(req, res, next) {
 		try {
+			const { search } = req.query;
+			if (search) {
+				const products = await Product.findOne({ name: { $regex: search, $options: "i" } });
+				if (!products) return res.redirect("/?notfound=true")
+				const relatedProducts = await Product.find({ category_id: products.category_id });
+				return res.render("result.search.hbs", { relatedProducts, search })
+			}
 			const productList = await Product.find({}).limit(4);
 			const categoryList = await Categories.find({});
 			res.render("category/category", { productList, categoryList });
@@ -12,6 +19,13 @@ class PageProductController {
 	}
 	async categoryProduct(req, res, next) {
 		try {
+			const { search } = req.query;
+			if (search) {
+				const products = await Product.findOne({ name: { $regex: search, $options: "i" } });
+				if (!products) return res.redirect("/?notfound=true")
+				const relatedProducts = await Product.find({ category_id: products.category_id });
+				return res.render("result.search.hbs", { relatedProducts, search })
+			}
 			const categoryList = await Categories.find({});
 			const { id } = req.params;
 			const productList = await Product.find({ category_id: id });

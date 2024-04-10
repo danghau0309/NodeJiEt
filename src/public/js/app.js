@@ -41,3 +41,6 @@ function createToast(type, icon, title, text) {
     notifications.appendChild(newToast);
     newToast.timeOut = setTimeout(() => newToast.remove(), 3000)
 }
+const rank = document.querySelectorAll("#rank");
+rank[0].innerHTML = `<i class='bx bx-trophy'></i>`
+

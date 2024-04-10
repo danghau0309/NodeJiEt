@@ -2,11 +2,26 @@
     <a href="/" class="logo"><img src="../../img/logo.png" alt="ảnh lỗi" /></a>
     <i class="bx bx-menu" id="icon-menu"></i>
     <ul class="navbar">
-        <li><a href="/">Home</a></li>
-        <li><a href="/products">Products</a></li>
-        <li><a href="/news">News</a></li>
+        <li><a href="/">Trang chủ</a></li>
+        <li><a href="/products">Sản phẩm</a></li>
+        <li><a href="/news">Tin tức</a></li>
+
     </ul>
+    <div class="search-box">
+        <form class="search-box-child" method="get" action="">
+            <input
+                type="seach"
+                class="search-txt search-input"
+                name="search"
+                placeholder="Search"
+            />
+            <input type="submit" value="OK" id="btn-search" />
+        </form>
+    </div>
     <div class="header-icons">
+        <i class="fa-solid fa-truck-fast"></i>
+        <p class="look-up-order">Tra cứu đơn hàng</p>
+        <i class="bx bx-search"></i>
         {{#if isLoggedIn}}
             <span id="icon-user"><p class="text_typing">{{username}}</p></span>
         {{else}}

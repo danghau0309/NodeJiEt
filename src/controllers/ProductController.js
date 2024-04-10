@@ -14,11 +14,22 @@ class ProductController {
 
 	async showHome(req, res, next) {
 		try {
+			const { search } = req.query;
+			const { favourite } = req.query;
+			if (favourite) {
+				const favouriteProductId = await Product.findById(favourite);
+				console.log("This is a favourite product!", favouriteProductId);
+			}
+			if (search) {
+				const products = await Product.findOne({ name: { $regex: search, $options: "i" } });
+				if (!products) return res.redirect("/?notfound=true")
+				const relatedProducts = await Product.find({ category_id: products.category_id });
+				return res.render("result.search.hbs", { relatedProducts, search })
+			}
 			const products = await Product.find({});
 			const bestSelling = await Product.find({
 				number_of_orders: { $gte: 2 }
 			});
-			console.log(bestSelling);
 			const productsWithManyViews = await Product.find({ view: { $gte: 50 } });
 			res.render("home", {
 				products,
@@ -48,5 +59,6 @@ class ProductController {
 			res.status(500).json(err);
 		}
 	}
+
 }
 module.exports = new ProductController();

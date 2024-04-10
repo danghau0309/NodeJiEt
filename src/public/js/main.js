@@ -2,10 +2,22 @@ const iconUser = document.getElementById("icon-user");
 const boxAuth = document.getElementById("box-auth");
 const addCart = document.getElementById("addCart");
 const notifi = document.getElementById("notifi");
+const btnSearch = document.querySelector('.bx-search');
+const searchInput = document.querySelector('.search-box');
+const menu = document.querySelector('.bx-menu');
+const navbar = document.querySelector('.navbar');
+menu.onclick = () => {
+	navbar.classList.toggle('active');
+}
 const displayAuth = () => {
 	boxAuth.classList.toggle("active");
+	searchInput.classList.remove("active");
 };
-iconUser.addEventListener("click", displayAuth);
+btnSearch.onclick = () => {
+	searchInput.classList.toggle('active');
+	boxAuth.classList.remove('active');
+};
+iconUser?.addEventListener("click", displayAuth);
 if (addCart !== null) {
 	addCart.addEventListener("click", () => {
 		const valueInput = document.getElementById("valueInput").value;
@@ -58,6 +70,7 @@ show_eye_slash?.addEventListener("click", () => {
 		passwordInput.type = "password";
 	}
 });
+
 const copyBtn = document.querySelectorAll(".btn-copy");
 copyBtn.forEach((item) => {
 	item?.addEventListener("click", () => {
@@ -79,6 +92,7 @@ copyBtn.forEach((item) => {
 	});
 });
 //
+
 const myPlot = document.getElementById("myPlot");
 const xArray = [];
 const yArray = [];
@@ -89,7 +103,6 @@ fetch("http://localhost:3000/api/getProductSoldList")
 			xArray.push(item.name);
 			yArray.push(item.number_of_orders);
 		});
-
 		const plotData = [
 			{
 				x: xArray,
@@ -99,9 +112,7 @@ fetch("http://localhost:3000/api/getProductSoldList")
 				marker: { color: "#474F7A" }
 			}
 		];
-
 		const layout = { title: "Thống kê số lượng sản phẩm đã bán" };
-
 		Plotly.newPlot(myPlot, plotData, layout);
 	})
 	.catch(err => console.log(err));

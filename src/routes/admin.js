@@ -4,6 +4,7 @@ const adminController = require("../controllers/AdminController");
 const { storage, upload } = require("./lib/multer");
 router.get("/CRUD", adminController.showCRUD);
 router.get("/order_manager", adminController.showOrderManager);
+router.get("/BXH", adminController.BXH)
 router.get("/order_manager/:id", adminController.orderDetails);
 router.get("/user_manager/", adminController.user_manager);
 router.get("/statistical/", adminController.statistical);

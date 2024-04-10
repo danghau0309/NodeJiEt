@@ -1,4 +1,3 @@
-const passport = require("passport");
 const User = require("../models/user");
 const Order = require("../models/orders");
 const Voucher = require("../models/voucher");
@@ -68,7 +67,7 @@ class ProfileController {
 						{ point: updatedPoint, voucherList },
 						{ new: true }
 					);
-					res.status(200).send(success);
+					res.status(200).redirect("/profile/exchange?success=true");
 				} else {
 					res.status(404).redirect("/profile/exchange?isNotEnoughPoint=true");
 				}

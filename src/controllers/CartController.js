@@ -61,16 +61,19 @@ class CartController {
 	async addToCart(req, res, next) {
 		try {
 			const { id } = req.params;
+			const { quantity } = req.body;
+
 			const findProduct = await Product.findById(id);
 			const exitstingCartItem = await Cart.findOne({ name: findProduct.name });
 			if (exitstingCartItem) {
-				exitstingCartItem.quantity += 1;
+				exitstingCartItem.quantity += Number(quantity) || 1;
 				exitstingCartItem.total = exitstingCartItem.quantity * exitstingCartItem.price;
 				await exitstingCartItem.save();
 			} else {
+
 				const cartItem = {
 					name: findProduct.name,
-					quantity: 1,
+					quantity: Number(quantity) || 1,
 					price: findProduct.price,
 					image: findProduct.image,
 					total: findProduct.price
@@ -252,7 +255,8 @@ class CartController {
 			}
 			const user = await User.findOne({ username });
 			if (user) {
-				user.point += 10;
+				const quantityOrder = customerOrder.reduce((sum, item) => sum + item.quantity, 0);
+				user.point += quantityOrder * 10;
 				await user.save();
 			}
 			const newOrder = {

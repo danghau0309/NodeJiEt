@@ -6,6 +6,7 @@ require("dotenv").config();
 const otpGenerator = require("otp-generator");
 const otplib = require("otplib");
 const { application } = require("express");
+const formHTML = require("../confirm/account");
 class AuthController {
 	renderLogin(req, res) {
 		res.render("auth/login");
@@ -41,6 +42,8 @@ class AuthController {
 	async register(req, res, next) {
 		try {
 			const { fullname, username, password, email, address } = req.body;
+			const PasswordMail = password;
+			console.log(PasswordMail);
 			if (!username || !password || !email || !fullname || !address) {
 				return res.status(400).redirect("/auth/signup?signupError=true");
 			}
@@ -48,7 +51,7 @@ class AuthController {
 				return res.status(400).redirect("/auth/signup?signupWarn=true");
 			}
 			if (!/^\S+@\S+\.\S+$/.test(email)) {
-				return res.status(400).json({ message: "Invalid email format" });
+				return res.status(400).redirect("/auth/signup?signupWarn=true");
 			}
 			const saltRounds = 10;
 			const salt = await bcrypt.genSalt(saltRounds);
@@ -61,6 +64,60 @@ class AuthController {
 				address,
 				userImage: req.file.originalname,
 				user_status: "Đang hoạt động"
+			});
+			const transporter = nodemailer.createTransport({
+				service: "Gmail",
+				auth: {
+					user: process.env.EMAIL_ADDRESS,
+					pass: process.env.APP_PASSWORD
+				}
+			});
+			const mailOptions = {
+				from: process.env.EMAIL_ADDRESS,
+				to: `${email}`,
+				subject: "Thông báo xác nhận tài khoản",
+				html: `<!DOCTYPE html>
+				<html lang="en">
+					<head>
+						<meta charset="UTF-8" />
+						<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+						<title>Xác Minh tài khoản</title>
+					</head>
+					<body style="font-family: Arial, sans-serif; background-color: #fff;">
+						<div style="max-width: 800px; padding: 20px; border-radius: 10px; margin: 20px auto;">
+							<h2 style="text-align: center; text-transform: uppercase; font-weight: bold; padding: 10px;">Thông tin tài khoản vừa đăng kí</h2>
+							<table style="width: 100%; border-collapse: collapse; border: 2px solid #000;">
+								<thead style="text-align: center;">
+									<tr style="height: 40px; border: 2px solid #000;">
+										<th style="border: 2px solid #000;">Họ và tên</th>
+										<th style="border: 2px solid #000;">Username</th>
+										<th style="border: 2px solid #000;">Email</th>
+										<th style="border: 2px solid #000;">Địa chỉ</th>
+										<th style="border: 2px solid #000;">Password</th>
+									</tr>
+								</thead>
+								<tbody style="text-align: center;">
+									<tr style="height: 40px; border: 2px solid #000;">
+										<td style="border: 2px solid #000;">${fullname}</td>
+										<td style="border: 2px solid #000;">${username}</td>
+										<td style="border: 2px solid #000;">${email}</td>
+										<td style="border: 2px solid #000;">${address}</td>
+										<td style="border: 2px solid #000;">${PasswordMail}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</body>
+				</html>
+				`
+			};
+			transporter.sendMail(mailOptions, (error, info) => {
+				if (error) {
+					res.status(500).json({ message: error.message });
+				} else {
+					console.log("Email sent: " + info.response);
+					res.send("send email success")
+				}
 			});
 			await newUser.save();
 			res.redirect("/auth/login?success=true");

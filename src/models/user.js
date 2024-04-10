@@ -15,7 +15,7 @@ const users = new Schema(
 		address: { type: "string" },
 		point: { type: Number, default: 0 },
 		voucherList: Array,
-		user_status: String
+		user_status: String,
 	},
 	{
 		timestamps: true
